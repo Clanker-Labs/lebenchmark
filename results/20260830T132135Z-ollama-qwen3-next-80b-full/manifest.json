@@ -1,0 +1,154 @@
+{
+  "lebenchmark_version": "0.1.0",
+  "started_at": "2026-08-30T13:21:35.681906+00:00",
+  "base_url": "http://spark.tailec77b2.ts.net:8000/v1",
+  "models": [
+    "chat",
+    "coder",
+    "fast",
+    "vision"
+  ],
+  "concurrency": 1,
+  "temperature": 0.3,
+  "max_tokens": 8192,
+  "tasks": [
+    {
+      "id": "explain_idempotent",
+      "kind": "abstain",
+      "expect_tool": null,
+      "paraphrases": 4
+    },
+    {
+      "id": "explain_homelab",
+      "kind": "abstain",
+      "expect_tool": null,
+      "paraphrases": 4
+    },
+    {
+      "id": "hardware_opinion",
+      "kind": "abstain",
+      "expect_tool": null,
+      "paraphrases": 4
+    },
+    {
+      "id": "restart_app",
+      "kind": "tool",
+      "expect_tool": "ecosystem_app",
+      "paraphrases": 4
+    },
+    {
+      "id": "app_logs",
+      "kind": "tool",
+      "expect_tool": "ecosystem_app",
+      "paraphrases": 4
+    },
+    {
+      "id": "stop_colloquial",
+      "kind": "tool",
+      "expect_tool": "ecosystem_app",
+      "paraphrases": 4
+    },
+    {
+      "id": "fleet_status",
+      "kind": "tool",
+      "expect_tool": "ecosystem_status",
+      "paraphrases": 4
+    },
+    {
+      "id": "chat_search",
+      "kind": "tool",
+      "expect_tool": "chat_search",
+      "paraphrases": 4
+    },
+    {
+      "id": "chat_list",
+      "kind": "tool",
+      "expect_tool": "chat_list",
+      "paraphrases": 4
+    },
+    {
+      "id": "memory_save",
+      "kind": "tool",
+      "expect_tool": "memory_save",
+      "paraphrases": 4
+    },
+    {
+      "id": "memory_search",
+      "kind": "tool",
+      "expect_tool": "memory_search",
+      "paraphrases": 4
+    },
+    {
+      "id": "home_control",
+      "kind": "tool",
+      "expect_tool": "home_control",
+      "paraphrases": 4
+    },
+    {
+      "id": "network_status",
+      "kind": "tool",
+      "expect_tool": "network_status",
+      "paraphrases": 4
+    },
+    {
+      "id": "brain_today",
+      "kind": "tool",
+      "expect_tool": "brain_today",
+      "paraphrases": 4
+    },
+    {
+      "id": "capture_note",
+      "kind": "tool",
+      "expect_tool": "capture_note",
+      "paraphrases": 4
+    }
+  ],
+  "planned_calls": 1310,
+  "planned_by_experiment": {
+    "toolcall": 1080,
+    "budget": 150,
+    "latency": 80
+  },
+  "tool_belt_size": 16,
+  "harness": {
+    "source": "http://spark.tailec77b2.ts.net:8701/api/status",
+    "runtime": {
+      "profile": "agx-edge-efficient",
+      "engine": "ollama",
+      "preset": "qwen3-next-80b",
+      "compose_profile": "ollama",
+      "model": "Qwen/Qwen3-Next-80B-A3B-Instruct",
+      "served_alias": "chat",
+      "tensor_parallel": "1",
+      "pipeline_parallel": "1",
+      "distributed": false,
+      "ray_role": "head",
+      "cluster_addr": "",
+      "head_address": "",
+      "expected_nodes": "1"
+    },
+    "hardware": {
+      "arch": "aarch64",
+      "product": "NVIDIA_DGX_Spark",
+      "ram_gb": 121.7,
+      "gpu_count": 1,
+      "is_dgx_spark": true,
+      "is_jetson": false,
+      "reason": "DGX Spark-class (NVIDIA_DGX_Spark, 121.7 GiB unified RAM, aarch64): vLLM on CUDA 13 / GB10 image"
+    },
+    "models": [
+      "qwen3-next:80b",
+      "chat:latest",
+      "qwen3-coder:30b",
+      "coder:latest",
+      "qwen3-vl:8b",
+      "vision:latest",
+      "fast:latest",
+      "qwen3:8b"
+    ]
+  },
+  "client_host": {
+    "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.35",
+    "python": "3.12.13"
+  }
+}

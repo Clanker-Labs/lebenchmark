@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+dist/
+build/
+*.egg-info/
+
+# Runs are committed deliberately, one directory at a time. Scratch labels are not.
+results/*-smoke/
+results/*-plumbing/

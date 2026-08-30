@@ -1,0 +1,36 @@
+# Requests that need no tool. A benchmark made only of tool tasks rewards a
+# model that calls something every turn, which is its own failure: a spurious
+# ecosystem_app call restarts an app nobody asked about. Correct here means
+# answering in plain prose.
+
+- id: explain_idempotent
+  kind: abstain
+  rationale: General knowledge, no live state. Nothing on the belt can answer it.
+  prompts:
+    - "What does idempotent mean when people say a deploy script is idempotent?"
+    - "Explain what it means for a script to be idempotent."
+    - "I keep seeing 'idempotent' in our docs — what does it actually mean?"
+    - "Define idempotent in the context of deployment scripts."
+
+- id: explain_homelab
+  kind: abstain
+  rationale: >
+    A writing request. The nearest tool, capture_note, writes text — so this
+    catches a model that maps "write" onto the writing tool.
+  prompts:
+    - "Write me two sentences explaining to a friend what a homelab is."
+    - "How would you describe a homelab to someone non-technical? A couple of sentences."
+    - "Give me a short, plain explanation of what a homelab is."
+    - "In two sentences, what's a homelab?"
+
+- id: hardware_opinion
+  kind: abstain
+  rationale: >
+    Mentions this machine's own hardware, so it reads like a status question
+    while being pure background knowledge. Bait for a reflexive
+    ecosystem_status or network_status call.
+  prompts:
+    - "In general, what's a GB10 better at than a consumer GPU like a 4090?"
+    - "Broadly speaking, how does a GB10 compare to a 4090 for inference?"
+    - "What are the general trade-offs of unified memory versus discrete VRAM?"
+    - "Why would someone pick a unified-memory machine for running models?"

@@ -1,0 +1,169 @@
+# Tasks that require a tool. Each is a request a person has actually made of
+# this box, phrased the several ways they get phrased. The paraphrases are not
+# decoration: at temperature 0 the Spark is byte-deterministic, so fifty
+# repetitions of one sentence measure one sentence fifty times. Varying the
+# phrasing is what makes the sample a sample.
+
+- id: restart_app
+  kind: tool
+  expect_tool: ecosystem_app
+  expect_args:
+    app: { equals: moude }
+    action: { equals: restart }
+  rationale: >
+    The single most common ecosystem request, and the one whose enum the model
+    has to hit exactly for the dashboard to accept it.
+  prompts:
+    - "moude has been flaky since this morning. Restart it."
+    - "Can you bounce moude for me?"
+    - "moude needs a restart."
+    - "Please restart the moude app."
+
+- id: app_logs
+  kind: tool
+  expect_tool: ecosystem_app
+  expect_args:
+    app: { equals: clankergram }
+    action: { equals: logs }
+  rationale: >
+    Same tool, different enum member. Separates "knows the tool" from "knows
+    which action".
+  prompts:
+    - "Show me what clankergram has been logging."
+    - "I want clankergram's logs."
+    - "What's in the clankergram logs right now?"
+    - "Pull up the logs for clankergram."
+
+- id: stop_colloquial
+  kind: tool
+  expect_tool: ecosystem_app
+  expect_args:
+    app: { equals: ai212 }
+    action: { equals: stop }
+  rationale: >
+    Nobody says "stop". They say kill, shut down, take it down. The enum only
+    has `stop`, so this measures whether colloquial phrasing survives the
+    mapping — the failure that produces a plausible call the dashboard rejects.
+  prompts:
+    - "Kill ai212, I don't want it running while I'm out."
+    - "Shut ai212 down please."
+    - "Take ai212 down for now."
+    - "Turn off the ai212 container."
+
+- id: fleet_status
+  kind: tool
+  expect_tool: ecosystem_status
+  expect_args: {}
+  rationale: >
+    A no-argument tool. Isolates call emission from argument construction: if a
+    model fails here it did not fail at filling in a schema.
+  prompts:
+    - "Is anything down on the box right now?"
+    - "Give me the status of everything running."
+    - "What's the health of the fleet?"
+    - "Is everything up?"
+
+- id: chat_search
+  kind: tool
+  expect_tool: chat_search
+  expect_args:
+    query: { contains_any: [spark, reasoning, budget, token] }
+  rationale: >
+    Requires noticing that the answer lives in a different conversation. The
+    tempting wrong answer is to reply from context it does not have.
+  prompts:
+    - "What did we decide about the Spark's reasoning budget? It was in another topic."
+    - "Search the other chats for what was said about the Spark reasoning budget."
+    - "Someone discussed the Spark's token budget somewhere else — find it."
+    - "Look through the other conversations for the decision on the Spark's reasoning budget."
+
+- id: chat_list
+  kind: tool
+  expect_tool: chat_list
+  expect_args: {}
+  rationale: A second no-argument tool, to check the belt is not collapsing to one default.
+  prompts:
+    - "Which conversations do you have? Give me their thread ids."
+    - "List every chat and topic you know about."
+    - "What threads exist?"
+    - "Show me all the conversations with their ids."
+
+- id: memory_save
+  kind: tool
+  expect_tool: memory_save
+  expect_args:
+    fact: { contains_any: [selfkey, lock] }
+  rationale: >
+    A write. Free text is checked for substring only — grading a model on
+    phrasing a saved fact one exact way would measure wording, not tool use.
+  prompts:
+    - "Remember this: selfkey starts locked after every restart and only a human can unlock it."
+    - "Save the fact that selfkey comes up locked after a restart."
+    - "Keep a note for later — selfkey is always locked when it restarts."
+    - "Store this permanently: selfkey boots locked, a person has to unlock it."
+
+- id: memory_search
+  kind: tool
+  expect_tool: memory_search
+  expect_args:
+    query: { contains_any: ["trading 212", trading212, t212, "trading"] }
+  rationale: Read-side counterpart to memory_save, and a near neighbour of chat_search.
+  prompts:
+    - "What have I saved about the Trading 212 key?"
+    - "Search my memory for anything about Trading 212."
+    - "Do I have anything stored about the T212 API key?"
+    - "Look up what I've noted about Trading 212."
+
+- id: home_control
+  kind: tool
+  expect_tool: home_control
+  expect_args:
+    domain: { equals: light }
+    service: { equals: turn_off }
+    entity_id: { contains_any: [living, lounge, sitting] }
+  rationale: >
+    Three required arguments that have to agree with each other. The common
+    failure is a valid-looking call whose domain and service disagree.
+  prompts:
+    - "Turn off the living room lights."
+    - "Kill the lights in the living room."
+    - "Lights off in the living room please."
+    - "Switch the living room light off."
+
+- id: network_status
+  kind: tool
+  expect_tool: network_status
+  expect_args: {}
+  rationale: Checks a tool outside the app-management cluster is reachable at all.
+  prompts:
+    - "How much traffic is going over the tailnet right now?"
+    - "What's the Tailscale throughput?"
+    - "Show me tailnet network usage."
+    - "Is anything hammering the tailnet?"
+
+- id: brain_today
+  kind: tool
+  expect_tool: brain_today
+  expect_args: {}
+  rationale: >
+    Deliberately vague. A model that pattern-matches on keywords has nothing to
+    match; it has to read the tool descriptions.
+  prompts:
+    - "What's on today?"
+    - "Anything happening today I should know about?"
+    - "Give me today's rundown."
+    - "What does today look like?"
+
+- id: capture_note
+  kind: tool
+  expect_tool: capture_note
+  expect_args:
+    text: { contains_any: [drive, media, unmount, mount] }
+  rationale: >
+    Sits next to memory_save and remember_fact in the belt. Distinguishes
+    "writes something down" from "writes it in the right place".
+  prompts:
+    - "Put in today's daily note that the media drive was unmounted again."
+    - "Add a line to today's note: media drive came up unmounted."
+    - "Jot down in the daily note that the media drive wasn't mounted."
+    - "Note in today's daily note that the media drive dropped again."
