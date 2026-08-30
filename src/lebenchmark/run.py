@@ -65,6 +65,9 @@ class Trial:
     args_schema_ok: bool
     args_match: bool
     content: str
+    #: Length only. Storing whole chains of thought would multiply the JSONL
+    #: several times over for a number that is only ever used as "was there any".
+    reasoning_chars: int
     notes: list[str]
     started_at: str
 
@@ -113,6 +116,7 @@ def _record(
         # Truncated: a full thinking-model transcript times 3000 makes the JSONL
         # unwieldy, and 2000 characters is more than enough to see what went wrong.
         content=response.content[:2000],
+        reasoning_chars=len(response.reasoning),
         notes=g.notes + ([response.error] if response.error else []),
         started_at=started_at,
     )

@@ -47,6 +47,30 @@ Plus one sweep aimed at a specific documented failure: how the reasoning-token
 budget changes the rate of empty answers on a second agent turn. See
 `docs/methodology.md`.
 
+## What the first run found
+
+`results/20260830T132135Z-ollama-qwen3-next-80b-full/` — 1310 calls, 4.6 hours,
+written up in `paper/PAPER.md`.
+
+- The documented failure is **real and reproduces verbatim**, but it belongs to
+  `coder` (6.0% [3.6, 10.0]), not to the fleet default `chat` (0.5% [0.1, 2.6]).
+  `fast` and `vision` did not do it once in 431 calls.
+- The two models fail in **different syntaxes**, so a parser written against one
+  recovers nothing from the other.
+- The **8B aliases are the most reliable tool callers** — `fast` and `vision` at
+  94.9% end to end, against 86.6% for both `chat` and `coder`.
+- Once a model calls the right tool, arguments are essentially always valid:
+  2 schema failures in 764 calls. All the loss is in *choosing* the tool.
+- Below 4096 reasoning tokens `chat` returns **no answer at all** on a second
+  agent turn — 100% at 1024, 46.7% at 2048, 0% at 8192. It is a cliff, not a
+  gradient.
+- `coder` is **17× faster per call** than `chat` at the same accuracy.
+
+And one about benchmarking rather than about the models: the first grading put
+`chat` last at 68.5% because it asked permission before restarting an app —
+which its tool description tells it to do — and the grader scored obedience as
+refusal. Re-scoring the stored responses put it at 86.6%.
+
 ## The tool belt is not a toy
 
 The sixteen tools in `src/lebenchmark/toolbelt.py` are transcribed from

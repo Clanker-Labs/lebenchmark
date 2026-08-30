@@ -12,7 +12,7 @@ import httpx
 import typer
 
 from . import __version__
-from .report import read, render, summarise, write_summary
+from .report import read, regrade, render, summarise, write_summary
 from .run import execute, manifest, plan_budget, plan_latency, plan_toolcall
 from .tasks import TaskError, load
 
@@ -176,7 +176,7 @@ def run(
     (out_dir / "manifest.json").write_text(json.dumps(meta, indent=2))
 
     rows = read(out_dir)
-    summary = summarise(rows)
+    summary = summarise(rows, tasks_dir)
     write_summary(summary, out_dir)
     (out_dir / "report.md").write_text(render(summary, meta))
     typer.echo(f"done      {len(rows)} calls in {elapsed / 60:.1f} min")
@@ -184,7 +184,10 @@ def run(
 
 
 @app.command()
-def report(run_dir: str = typer.Argument(..., help="A results/<run-id> directory.")) -> None:
+def report(
+    run_dir: str = typer.Argument(..., help="A results/<run-id> directory."),
+    tasks_dir: str = typer.Option("tasks", "--tasks"),
+) -> None:
     """Re-aggregate an existing run. Never touches the gateway."""
     path = Path(run_dir)
     rows = read(path)
@@ -193,7 +196,9 @@ def report(run_dir: str = typer.Argument(..., help="A results/<run-id> directory
         "base_url": "unknown", "started_at": "unknown", "temperature": "unknown",
         "max_tokens": "unknown", "tool_belt_size": "unknown", "harness": None,
     }
-    summary = summarise(rows)
+    # Re-score against the current grader rather than trusting the verdicts
+    # written at run time. That is the point of storing responses.
+    summary = summarise(regrade(rows, tasks_dir), tasks_dir)
     write_summary(summary, path)
     text = render(summary, meta)
     (path / "report.md").write_text(text)

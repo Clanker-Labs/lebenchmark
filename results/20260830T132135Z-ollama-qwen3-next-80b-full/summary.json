@@ -1,0 +1,1923 @@
+{
+  "models": {
+    "chat": {
+      "model": "chat",
+      "trials": 270,
+      "errors": 0,
+      "emission": {
+        "successes": 194,
+        "trials": 216,
+        "point": 0.8981481481481481,
+        "ci95": [
+          0.8506093749352146,
+          0.9317726239955952
+        ]
+      },
+      "prose_call": {
+        "successes": 1,
+        "trials": 216,
+        "point": 0.004629629629629629,
+        "ci95": [
+          0.0008177113226299475,
+          0.025753522565780992
+        ]
+      },
+      "refusal": {
+        "successes": 0,
+        "trials": 216,
+        "point": 0.0,
+        "ci95": [
+          0.0,
+          0.01747376878456431
+        ]
+      },
+      "confirmation": {
+        "successes": 21,
+        "trials": 36,
+        "point": 0.5833333333333334,
+        "ci95": [
+          0.4220025157487166,
+          0.7285943794855394
+        ]
+      },
+      "empty": {
+        "successes": 0,
+        "trials": 216,
+        "point": 0.0,
+        "ci95": [
+          0.0,
+          0.01747376878456431
+        ]
+      },
+      "tool_choice": {
+        "successes": 166,
+        "trials": 194,
+        "point": 0.8556701030927835,
+        "ci95": [
+          0.7993105892498205,
+          0.8982176276497065
+        ]
+      },
+      "args_schema": {
+        "successes": 166,
+        "trials": 166,
+        "point": 1.0,
+        "ci95": [
+          0.9773820900540565,
+          0.9999999999999999
+        ]
+      },
+      "args_match": {
+        "successes": 166,
+        "trials": 166,
+        "point": 1.0,
+        "ci95": [
+          0.9773820900540565,
+          0.9999999999999999
+        ]
+      },
+      "task_success": {
+        "successes": 187,
+        "trials": 216,
+        "point": 0.8657407407407407,
+        "ci95": [
+          0.8138319169940197,
+          0.9048678262098638
+        ]
+      },
+      "abstention": {
+        "successes": 54,
+        "trials": 54,
+        "point": 1.0,
+        "ci95": [
+          0.9335864119091037,
+          1.0
+        ]
+      },
+      "latency_all": {
+        "n": 270,
+        "mean": 20.825843333333335,
+        "p50": 12.3886,
+        "p95": 69.69766999999999,
+        "p99": 153.62516
+      },
+      "tokens_per_s": 36.39868605561071,
+      "hallucinated_apps": {},
+      "syntax_shapes": {
+        "tools_tag": 1
+      }
+    },
+    "coder": {
+      "model": "coder",
+      "trials": 270,
+      "errors": 0,
+      "emission": {
+        "successes": 203,
+        "trials": 216,
+        "point": 0.9398148148148148,
+        "ci95": [
+          0.8997655664098385,
+          0.964493618455591
+        ]
+      },
+      "prose_call": {
+        "successes": 13,
+        "trials": 216,
+        "point": 0.06018518518518518,
+        "ci95": [
+          0.03550638154440902,
+          0.10023443359016143
+        ]
+      },
+      "refusal": {
+        "successes": 0,
+        "trials": 216,
+        "point": 0.0,
+        "ci95": [
+          0.0,
+          0.01747376878456431
+        ]
+      },
+      "confirmation": {
+        "successes": 0,
+        "trials": 36,
+        "point": 0.0,
+        "ci95": [
+          0.0,
+          0.09641862859446367
+        ]
+      },
+      "empty": {
+        "successes": 0,
+        "trials": 216,
+        "point": 0.0,
+        "ci95": [
+          0.0,
+          0.01747376878456431
+        ]
+      },
+      "tool_choice": {
+        "successes": 187,
+        "trials": 203,
+        "point": 0.9211822660098522,
+        "ci95": [
+          0.8758152199565495,
+          0.9509049210391479
+        ]
+      },
+      "args_schema": {
+        "successes": 187,
+        "trials": 187,
+        "point": 1.0,
+        "ci95": [
+          0.9798709418570136,
+          1.0
+        ]
+      },
+      "args_match": {
+        "successes": 187,
+        "trials": 187,
+        "point": 1.0,
+        "ci95": [
+          0.9798709418570136,
+          1.0
+        ]
+      },
+      "task_success": {
+        "successes": 187,
+        "trials": 216,
+        "point": 0.8657407407407407,
+        "ci95": [
+          0.8138319169940197,
+          0.9048678262098638
+        ]
+      },
+      "abstention": {
+        "successes": 54,
+        "trials": 54,
+        "point": 1.0,
+        "ci95": [
+          0.9335864119091037,
+          1.0
+        ]
+      },
+      "latency_all": {
+        "n": 270,
+        "mean": 1.1975085185185184,
+        "p50": 0.7121,
+        "p95": 3.640989999999998,
+        "p99": 4.9764800000000005
+      },
+      "tokens_per_s": 52.225716789148336,
+      "hallucinated_apps": {},
+      "syntax_shapes": {
+        "function_tag": 13
+      }
+    },
+    "fast": {
+      "model": "fast",
+      "trials": 270,
+      "errors": 1,
+      "emission": {
+        "successes": 215,
+        "trials": 215,
+        "point": 1.0,
+        "ci95": [
+          0.9824463845132672,
+          1.0
+        ]
+      },
+      "prose_call": {
+        "successes": 0,
+        "trials": 215,
+        "point": 0.0,
+        "ci95": [
+          0.0,
+          0.017553615486732756
+        ]
+      },
+      "refusal": {
+        "successes": 0,
+        "trials": 215,
+        "point": 0.0,
+        "ci95": [
+          0.0,
+          0.017553615486732756
+        ]
+      },
+      "confirmation": {
+        "successes": 0,
+        "trials": 36,
+        "point": 0.0,
+        "ci95": [
+          0.0,
+          0.09641862859446367
+        ]
+      },
+      "empty": {
+        "successes": 0,
+        "trials": 215,
+        "point": 0.0,
+        "ci95": [
+          0.0,
+          0.017553615486732756
+        ]
+      },
+      "tool_choice": {
+        "successes": 206,
+        "trials": 215,
+        "point": 0.958139534883721,
+        "ci95": [
+          0.9223717802064653,
+          0.9778232790917376
+        ]
+      },
+      "args_schema": {
+        "successes": 204,
+        "trials": 206,
+        "point": 0.9902912621359223,
+        "ci95": [
+          0.9652980447338898,
+          0.9973334635259029
+        ]
+      },
+      "args_match": {
+        "successes": 206,
+        "trials": 206,
+        "point": 1.0,
+        "ci95": [
+          0.981693518324343,
+          0.9999999999999999
+        ]
+      },
+      "task_success": {
+        "successes": 204,
+        "trials": 215,
+        "point": 0.9488372093023256,
+        "ci95": [
+          0.9107224681986028,
+          0.9711945188295859
+        ]
+      },
+      "abstention": {
+        "successes": 53,
+        "trials": 54,
+        "point": 0.9814814814814815,
+        "ci95": [
+          0.9022856251121808,
+          0.9967235122817709
+        ]
+      },
+      "latency_all": {
+        "n": 269,
+        "mean": 7.660505947955391,
+        "p50": 5.7217,
+        "p95": 17.6285,
+        "p99": 28.650151999999967
+      },
+      "tokens_per_s": 34.08056219994981,
+      "hallucinated_apps": {},
+      "syntax_shapes": {}
+    },
+    "vision": {
+      "model": "vision",
+      "trials": 270,
+      "errors": 0,
+      "emission": {
+        "successes": 216,
+        "trials": 216,
+        "point": 1.0,
+        "ci95": [
+          0.9825262312154358,
+          1.0
+        ]
+      },
+      "prose_call": {
+        "successes": 0,
+        "trials": 216,
+        "point": 0.0,
+        "ci95": [
+          0.0,
+          0.01747376878456431
+        ]
+      },
+      "refusal": {
+        "successes": 0,
+        "trials": 216,
+        "point": 0.0,
+        "ci95": [
+          0.0,
+          0.01747376878456431
+        ]
+      },
+      "confirmation": {
+        "successes": 0,
+        "trials": 36,
+        "point": 0.0,
+        "ci95": [
+          0.0,
+          0.09641862859446367
+        ]
+      },
+      "empty": {
+        "successes": 0,
+        "trials": 216,
+        "point": 0.0,
+        "ci95": [
+          0.0,
+          0.01747376878456431
+        ]
+      },
+      "tool_choice": {
+        "successes": 205,
+        "trials": 216,
+        "point": 0.9490740740740741,
+        "ci95": [
+          0.9111251277171358,
+          0.971328987355987
+        ]
+      },
+      "args_schema": {
+        "successes": 205,
+        "trials": 205,
+        "point": 1.0,
+        "ci95": [
+          0.9816058610086978,
+          0.9999999999999999
+        ]
+      },
+      "args_match": {
+        "successes": 205,
+        "trials": 205,
+        "point": 1.0,
+        "ci95": [
+          0.9816058610086978,
+          0.9999999999999999
+        ]
+      },
+      "task_success": {
+        "successes": 205,
+        "trials": 216,
+        "point": 0.9490740740740741,
+        "ci95": [
+          0.9111251277171358,
+          0.971328987355987
+        ]
+      },
+      "abstention": {
+        "successes": 36,
+        "trials": 54,
+        "point": 0.6666666666666666,
+        "ci95": [
+          0.5336096360112935,
+          0.7775858346250742
+        ]
+      },
+      "latency_all": {
+        "n": 270,
+        "mean": 17.193422592592594,
+        "p50": 8.22805,
+        "p95": 40.21044499999994,
+        "p99": 222.03539700000002
+      },
+      "tokens_per_s": 34.34969888679006,
+      "hallucinated_apps": {},
+      "syntax_shapes": {}
+    }
+  },
+  "per_task": {
+    "app_logs": {
+      "chat": {
+        "n": 18,
+        "success": {
+          "successes": 14,
+          "trials": 18,
+          "point": 0.7777777777777778,
+          "ci95": [
+            0.5478541568378739,
+            0.9099907189139831
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      },
+      "coder": {
+        "n": 18,
+        "success": {
+          "successes": 14,
+          "trials": 18,
+          "point": 0.7777777777777778,
+          "ci95": [
+            0.5478541568378739,
+            0.9099907189139831
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      },
+      "fast": {
+        "n": 18,
+        "success": {
+          "successes": 13,
+          "trials": 18,
+          "point": 0.7222222222222222,
+          "ci95": [
+            0.4912734343970254,
+            0.8750024662044601
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      },
+      "vision": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      }
+    },
+    "brain_today": {
+      "chat": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      },
+      "coder": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      },
+      "fast": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      },
+      "vision": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      }
+    },
+    "capture_note": {
+      "chat": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      },
+      "coder": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      },
+      "fast": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      },
+      "vision": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      }
+    },
+    "chat_list": {
+      "chat": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      },
+      "coder": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      },
+      "fast": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      },
+      "vision": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      }
+    },
+    "chat_search": {
+      "chat": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      },
+      "coder": {
+        "n": 18,
+        "success": {
+          "successes": 15,
+          "trials": 18,
+          "point": 0.8333333333333334,
+          "ci95": [
+            0.6077796189608428,
+            0.9416342319413856
+          ]
+        },
+        "outcomes": {
+          "tool_call": 16,
+          "prose_tool_syntax": 2
+        }
+      },
+      "fast": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      },
+      "vision": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      }
+    },
+    "explain_homelab": {
+      "chat": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "prose_plain": 18
+        }
+      },
+      "coder": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "prose_plain": 18
+        }
+      },
+      "fast": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "prose_plain": 18
+        }
+      },
+      "vision": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "prose_plain": 18
+        }
+      }
+    },
+    "explain_idempotent": {
+      "chat": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "prose_plain": 18
+        }
+      },
+      "coder": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "prose_plain": 18
+        }
+      },
+      "fast": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "prose_plain": 18
+        }
+      },
+      "vision": {
+        "n": 18,
+        "success": {
+          "successes": 14,
+          "trials": 18,
+          "point": 0.7777777777777778,
+          "ci95": [
+            0.5478541568378739,
+            0.9099907189139831
+          ]
+        },
+        "outcomes": {
+          "prose_plain": 14,
+          "empty": 4
+        }
+      }
+    },
+    "fleet_status": {
+      "chat": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      },
+      "coder": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      },
+      "fast": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      },
+      "vision": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      }
+    },
+    "hardware_opinion": {
+      "chat": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "prose_plain": 18
+        }
+      },
+      "coder": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "prose_plain": 18
+        }
+      },
+      "fast": {
+        "n": 18,
+        "success": {
+          "successes": 17,
+          "trials": 18,
+          "point": 0.9444444444444444,
+          "ci95": [
+            0.7424269921812741,
+            0.990124809021697
+          ]
+        },
+        "outcomes": {
+          "prose_plain": 17,
+          "prose_tool_syntax": 1
+        }
+      },
+      "vision": {
+        "n": 18,
+        "success": {
+          "successes": 4,
+          "trials": 18,
+          "point": 0.2222222222222222,
+          "ci95": [
+            0.09000928108601694,
+            0.45214584316212625
+          ]
+        },
+        "outcomes": {
+          "empty": 14,
+          "prose_plain": 4
+        }
+      }
+    },
+    "home_control": {
+      "chat": {
+        "n": 18,
+        "success": {
+          "successes": 4,
+          "trials": 18,
+          "point": 0.2222222222222222,
+          "ci95": [
+            0.09000928108601694,
+            0.45214584316212625
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      },
+      "coder": {
+        "n": 18,
+        "success": {
+          "successes": 4,
+          "trials": 18,
+          "point": 0.2222222222222222,
+          "ci95": [
+            0.09000928108601694,
+            0.45214584316212625
+          ]
+        },
+        "outcomes": {
+          "prose_tool_syntax": 5,
+          "tool_call": 13
+        }
+      },
+      "fast": {
+        "n": 17,
+        "success": {
+          "successes": 17,
+          "trials": 17,
+          "point": 1.0,
+          "ci95": [
+            0.8156818649911483,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 17
+        }
+      },
+      "vision": {
+        "n": 18,
+        "success": {
+          "successes": 17,
+          "trials": 18,
+          "point": 0.9444444444444444,
+          "ci95": [
+            0.7424269921812741,
+            0.990124809021697
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      }
+    },
+    "memory_save": {
+      "chat": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      },
+      "coder": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      },
+      "fast": {
+        "n": 18,
+        "success": {
+          "successes": 14,
+          "trials": 18,
+          "point": 0.7777777777777778,
+          "ci95": [
+            0.5478541568378739,
+            0.9099907189139831
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      },
+      "vision": {
+        "n": 18,
+        "success": {
+          "successes": 14,
+          "trials": 18,
+          "point": 0.7777777777777778,
+          "ci95": [
+            0.5478541568378739,
+            0.9099907189139831
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      }
+    },
+    "memory_search": {
+      "chat": {
+        "n": 18,
+        "success": {
+          "successes": 15,
+          "trials": 18,
+          "point": 0.8333333333333334,
+          "ci95": [
+            0.6077796189608428,
+            0.9416342319413856
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      },
+      "coder": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      },
+      "fast": {
+        "n": 18,
+        "success": {
+          "successes": 16,
+          "trials": 18,
+          "point": 0.8888888888888888,
+          "ci95": [
+            0.672002348698212,
+            0.9689804773543876
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      },
+      "vision": {
+        "n": 18,
+        "success": {
+          "successes": 12,
+          "trials": 18,
+          "point": 0.6666666666666666,
+          "ci95": [
+            0.43749467295945105,
+            0.837212252491663
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      }
+    },
+    "network_status": {
+      "chat": {
+        "n": 18,
+        "success": {
+          "successes": 17,
+          "trials": 18,
+          "point": 0.9444444444444444,
+          "ci95": [
+            0.7424269921812741,
+            0.990124809021697
+          ]
+        },
+        "outcomes": {
+          "tool_call": 17,
+          "prose_tool_syntax": 1
+        }
+      },
+      "coder": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      },
+      "fast": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      },
+      "vision": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      }
+    },
+    "restart_app": {
+      "chat": {
+        "n": 18,
+        "success": {
+          "successes": 16,
+          "trials": 18,
+          "point": 0.8888888888888888,
+          "ci95": [
+            0.672002348698212,
+            0.9689804773543876
+          ]
+        },
+        "outcomes": {
+          "confirmation": 11,
+          "tool_call": 7
+        }
+      },
+      "coder": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      },
+      "fast": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      },
+      "vision": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      }
+    },
+    "stop_colloquial": {
+      "chat": {
+        "n": 18,
+        "success": {
+          "successes": 13,
+          "trials": 18,
+          "point": 0.7222222222222222,
+          "ci95": [
+            0.4912734343970254,
+            0.8750024662044601
+          ]
+        },
+        "outcomes": {
+          "tool_call": 8,
+          "confirmation": 10
+        }
+      },
+      "coder": {
+        "n": 18,
+        "success": {
+          "successes": 10,
+          "trials": 18,
+          "point": 0.5555555555555556,
+          "ci95": [
+            0.33716415642042774,
+            0.7544048187299437
+          ]
+        },
+        "outcomes": {
+          "tool_call": 12,
+          "prose_tool_syntax": 6
+        }
+      },
+      "fast": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      },
+      "vision": {
+        "n": 18,
+        "success": {
+          "successes": 18,
+          "trials": 18,
+          "point": 1.0,
+          "ci95": [
+            0.8241207763533425,
+            1.0
+          ]
+        },
+        "outcomes": {
+          "tool_call": 18
+        }
+      }
+    }
+  },
+  "budget": {
+    "chat": {
+      "512": {
+        "n": 15,
+        "answered": {
+          "successes": 0,
+          "trials": 15,
+          "point": 0.0,
+          "ci95": [
+            0.0,
+            0.20388330103584862
+          ]
+        },
+        "another_call": {
+          "successes": 0,
+          "trials": 15,
+          "point": 0.0,
+          "ci95": [
+            0.0,
+            0.20388330103584862
+          ]
+        },
+        "empty": {
+          "successes": 15,
+          "trials": 15,
+          "point": 1.0,
+          "ci95": [
+            0.7961166989641515,
+            1.0
+          ]
+        },
+        "truncated": {
+          "successes": 15,
+          "trials": 15,
+          "point": 1.0,
+          "ci95": [
+            0.7961166989641515,
+            1.0
+          ]
+        },
+        "latency": {
+          "n": 15,
+          "mean": 9.484206666666667,
+          "p50": 9.5227,
+          "p95": 9.6699,
+          "p99": 9.68894
+        },
+        "mean_completion_tokens": 512.0
+      },
+      "1024": {
+        "n": 15,
+        "answered": {
+          "successes": 0,
+          "trials": 15,
+          "point": 0.0,
+          "ci95": [
+            0.0,
+            0.20388330103584862
+          ]
+        },
+        "another_call": {
+          "successes": 0,
+          "trials": 15,
+          "point": 0.0,
+          "ci95": [
+            0.0,
+            0.20388330103584862
+          ]
+        },
+        "empty": {
+          "successes": 15,
+          "trials": 15,
+          "point": 1.0,
+          "ci95": [
+            0.7961166989641515,
+            1.0
+          ]
+        },
+        "truncated": {
+          "successes": 15,
+          "trials": 15,
+          "point": 1.0,
+          "ci95": [
+            0.7961166989641515,
+            1.0
+          ]
+        },
+        "latency": {
+          "n": 15,
+          "mean": 17.86510666666667,
+          "p50": 17.7908,
+          "p95": 18.99778,
+          "p99": 19.385075999999998
+        },
+        "mean_completion_tokens": 1024.0
+      },
+      "2048": {
+        "n": 15,
+        "answered": {
+          "successes": 8,
+          "trials": 15,
+          "point": 0.5333333333333333,
+          "ci95": [
+            0.30116980025498397,
+            0.7519046463426261
+          ]
+        },
+        "another_call": {
+          "successes": 0,
+          "trials": 15,
+          "point": 0.0,
+          "ci95": [
+            0.0,
+            0.20388330103584862
+          ]
+        },
+        "empty": {
+          "successes": 7,
+          "trials": 15,
+          "point": 0.4666666666666667,
+          "ci95": [
+            0.24809535365737387,
+            0.698830199745016
+          ]
+        },
+        "truncated": {
+          "successes": 13,
+          "trials": 15,
+          "point": 0.8666666666666667,
+          "ci95": [
+            0.6211801716767764,
+            0.9626387408969346
+          ]
+        },
+        "latency": {
+          "n": 15,
+          "mean": 42.60704666666666,
+          "p50": 34.8511,
+          "p95": 79.02941999999996,
+          "p99": 100.56612399999997
+        },
+        "mean_completion_tokens": 2006.7333333333333
+      },
+      "4096": {
+        "n": 15,
+        "answered": {
+          "successes": 14,
+          "trials": 15,
+          "point": 0.9333333333333333,
+          "ci95": [
+            0.7018347012621998,
+            0.9881331045067315
+          ]
+        },
+        "another_call": {
+          "successes": 0,
+          "trials": 15,
+          "point": 0.0,
+          "ci95": [
+            0.0,
+            0.20388330103584862
+          ]
+        },
+        "empty": {
+          "successes": 1,
+          "trials": 15,
+          "point": 0.06666666666666667,
+          "ci95": [
+            0.011866895493268553,
+            0.2981652987378003
+          ]
+        },
+        "truncated": {
+          "successes": 1,
+          "trials": 15,
+          "point": 0.06666666666666667,
+          "ci95": [
+            0.011866895493268553,
+            0.2981652987378003
+          ]
+        },
+        "latency": {
+          "n": 15,
+          "mean": 46.21914,
+          "p50": 44.0113,
+          "p95": 68.46234,
+          "p99": 68.510948
+        },
+        "mean_completion_tokens": 2757.6
+      },
+      "8192": {
+        "n": 15,
+        "answered": {
+          "successes": 15,
+          "trials": 15,
+          "point": 1.0,
+          "ci95": [
+            0.7961166989641515,
+            1.0
+          ]
+        },
+        "another_call": {
+          "successes": 0,
+          "trials": 15,
+          "point": 0.0,
+          "ci95": [
+            0.0,
+            0.20388330103584862
+          ]
+        },
+        "empty": {
+          "successes": 0,
+          "trials": 15,
+          "point": 0.0,
+          "ci95": [
+            0.0,
+            0.20388330103584862
+          ]
+        },
+        "truncated": {
+          "successes": 0,
+          "trials": 15,
+          "point": 0.0,
+          "ci95": [
+            0.0,
+            0.20388330103584862
+          ]
+        },
+        "latency": {
+          "n": 15,
+          "mean": 45.977759999999996,
+          "p50": 45.5267,
+          "p95": 71.40521,
+          "p99": 73.14048199999999
+        },
+        "mean_completion_tokens": 2741.0666666666666
+      }
+    },
+    "coder": {
+      "512": {
+        "n": 15,
+        "answered": {
+          "successes": 12,
+          "trials": 15,
+          "point": 0.8,
+          "ci95": [
+            0.5481455128483065,
+            0.9295245065301844
+          ]
+        },
+        "another_call": {
+          "successes": 11,
+          "trials": 15,
+          "point": 0.7333333333333333,
+          "ci95": [
+            0.4804956594401943,
+            0.8910254667430761
+          ]
+        },
+        "empty": {
+          "successes": 0,
+          "trials": 15,
+          "point": 0.0,
+          "ci95": [
+            0.0,
+            0.20388330103584862
+          ]
+        },
+        "truncated": {
+          "successes": 1,
+          "trials": 15,
+          "point": 0.06666666666666667,
+          "ci95": [
+            0.011866895493268553,
+            0.2981652987378003
+          ]
+        },
+        "latency": {
+          "n": 15,
+          "mean": 3.438346666666667,
+          "p50": 3.5368,
+          "p95": 4.961649999999997,
+          "p99": 6.740489999999998
+        },
+        "mean_completion_tokens": 229.86666666666667
+      },
+      "1024": {
+        "n": 15,
+        "answered": {
+          "successes": 7,
+          "trials": 15,
+          "point": 0.4666666666666667,
+          "ci95": [
+            0.24809535365737387,
+            0.698830199745016
+          ]
+        },
+        "another_call": {
+          "successes": 13,
+          "trials": 15,
+          "point": 0.8666666666666667,
+          "ci95": [
+            0.6211801716767764,
+            0.9626387408969346
+          ]
+        },
+        "empty": {
+          "successes": 0,
+          "trials": 15,
+          "point": 0.0,
+          "ci95": [
+            0.0,
+            0.20388330103584862
+          ]
+        },
+        "truncated": {
+          "successes": 0,
+          "trials": 15,
+          "point": 0.0,
+          "ci95": [
+            0.0,
+            0.20388330103584862
+          ]
+        },
+        "latency": {
+          "n": 15,
+          "mean": 2.638986666666667,
+          "p50": 1.9249,
+          "p95": 4.77834,
+          "p99": 4.806228
+        },
+        "mean_completion_tokens": 168.86666666666667
+      },
+      "2048": {
+        "n": 15,
+        "answered": {
+          "successes": 8,
+          "trials": 15,
+          "point": 0.5333333333333333,
+          "ci95": [
+            0.30116980025498397,
+            0.7519046463426261
+          ]
+        },
+        "another_call": {
+          "successes": 13,
+          "trials": 15,
+          "point": 0.8666666666666667,
+          "ci95": [
+            0.6211801716767764,
+            0.9626387408969346
+          ]
+        },
+        "empty": {
+          "successes": 0,
+          "trials": 15,
+          "point": 0.0,
+          "ci95": [
+            0.0,
+            0.20388330103584862
+          ]
+        },
+        "truncated": {
+          "successes": 0,
+          "trials": 15,
+          "point": 0.0,
+          "ci95": [
+            0.0,
+            0.20388330103584862
+          ]
+        },
+        "latency": {
+          "n": 15,
+          "mean": 3.6579800000000002,
+          "p50": 3.1888,
+          "p95": 9.610669999999999,
+          "p99": 10.426533999999998
+        },
+        "mean_completion_tokens": 181.93333333333334
+      },
+      "4096": {
+        "n": 15,
+        "answered": {
+          "successes": 8,
+          "trials": 15,
+          "point": 0.5333333333333333,
+          "ci95": [
+            0.30116980025498397,
+            0.7519046463426261
+          ]
+        },
+        "another_call": {
+          "successes": 12,
+          "trials": 15,
+          "point": 0.8,
+          "ci95": [
+            0.5481455128483065,
+            0.9295245065301844
+          ]
+        },
+        "empty": {
+          "successes": 0,
+          "trials": 15,
+          "point": 0.0,
+          "ci95": [
+            0.0,
+            0.20388330103584862
+          ]
+        },
+        "truncated": {
+          "successes": 0,
+          "trials": 15,
+          "point": 0.0,
+          "ci95": [
+            0.0,
+            0.20388330103584862
+          ]
+        },
+        "latency": {
+          "n": 15,
+          "mean": 2.79048,
+          "p50": 3.2943,
+          "p95": 4.30128,
+          "p99": 4.370496
+        },
+        "mean_completion_tokens": 181.0
+      },
+      "8192": {
+        "n": 15,
+        "answered": {
+          "successes": 10,
+          "trials": 15,
+          "point": 0.6666666666666666,
+          "ci95": [
+            0.41713547738519774,
+            0.8482367556028526
+          ]
+        },
+        "another_call": {
+          "successes": 12,
+          "trials": 15,
+          "point": 0.8,
+          "ci95": [
+            0.5481455128483065,
+            0.9295245065301844
+          ]
+        },
+        "empty": {
+          "successes": 0,
+          "trials": 15,
+          "point": 0.0,
+          "ci95": [
+            0.0,
+            0.20388330103584862
+          ]
+        },
+        "truncated": {
+          "successes": 0,
+          "trials": 15,
+          "point": 0.0,
+          "ci95": [
+            0.0,
+            0.20388330103584862
+          ]
+        },
+        "latency": {
+          "n": 15,
+          "mean": 3.1857266666666666,
+          "p50": 3.5386,
+          "p95": 4.57893,
+          "p99": 5.0460259999999995
+        },
+        "mean_completion_tokens": 207.2
+      }
+    }
+  },
+  "latency": {
+    "chat": {
+      "n": 20,
+      "ttft": {
+        "n": 20,
+        "mean": 26.8853,
+        "p50": 23.4685,
+        "p95": 50.061405000000015,
+        "p99": 65.78892099999997
+      },
+      "total": {
+        "n": 20,
+        "mean": 27.2668,
+        "p50": 23.8251,
+        "p95": 50.47727000000001,
+        "p99": 65.89873399999996
+      },
+      "mean_completion_tokens": 1314.45
+    },
+    "coder": {
+      "n": 20,
+      "ttft": {
+        "n": 20,
+        "mean": 0.874595,
+        "p50": 0.69765,
+        "p95": 1.633185,
+        "p99": 1.6998369999999998
+      },
+      "total": {
+        "n": 20,
+        "mean": 0.88613,
+        "p50": 0.7056,
+        "p95": 1.67124,
+        "p99": 1.708328
+      },
+      "mean_completion_tokens": 37.0
+    },
+    "fast": {
+      "n": 20,
+      "ttft": {
+        "n": 20,
+        "mean": 7.201365,
+        "p50": 7.55575,
+        "p95": 9.579250000000002,
+        "p99": 11.799209999999997
+      },
+      "total": {
+        "n": 20,
+        "mean": 7.2395,
+        "p50": 7.581300000000001,
+        "p95": 9.633150000000002,
+        "p99": 11.851589999999996
+      },
+      "mean_completion_tokens": 282.4
+    },
+    "vision": {
+      "n": 20,
+      "ttft": {
+        "n": 20,
+        "mean": 10.55522,
+        "p50": 10.0033,
+        "p95": 19.191640000000003,
+        "p99": 21.206248
+      },
+      "total": {
+        "n": 20,
+        "mean": 10.573345,
+        "p50": 10.02385,
+        "p95": 19.21246,
+        "p99": 21.228892
+      },
+      "mean_completion_tokens": 419.15
+    }
+  },
+  "totals": {
+    "calls": 1310,
+    "errors": 1
+  }
+}

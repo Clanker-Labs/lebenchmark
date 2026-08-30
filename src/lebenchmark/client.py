@@ -27,6 +27,13 @@ class Response:
     ttft_s: float | None = None
     finish_reason: str | None = None
     content: str = ""
+    #: Some models return chain-of-thought in a separate `message.reasoning`
+    #: field rather than in `content`. A caller cannot use it, so it is not
+    #: content — but it is the difference between "the model said nothing" and
+    #: "the model reasoned until the budget ran out and never answered", which
+    #: are different bugs. The first run of this benchmark could not tell them
+    #: apart because this field was being discarded.
+    reasoning: str = ""
     tool_calls: list[dict[str, Any]] = field(default_factory=list)
     prompt_tokens: int | None = None
     completion_tokens: int | None = None
@@ -107,6 +114,7 @@ class Client:
             latency_s=latency,
             finish_reason=choice.get("finish_reason"),
             content=message.get("content") or "",
+            reasoning=message.get("reasoning") or "",
             tool_calls=message.get("tool_calls") or [],
             prompt_tokens=usage.get("prompt_tokens"),
             completion_tokens=usage.get("completion_tokens"),
@@ -147,6 +155,7 @@ class Client:
         t0 = time.perf_counter()
         ttft: float | None = None
         content_parts: list[str] = []
+        reasoning_parts: list[str] = []
         # Streamed tool calls arrive as indexed fragments that must be stitched.
         fragments: dict[int, dict[str, Any]] = {}
         finish_reason: str | None = None
@@ -178,6 +187,8 @@ class Client:
                     choice = (chunk.get("choices") or [{}])[0]
                     finish_reason = choice.get("finish_reason") or finish_reason
                     delta = choice.get("delta") or {}
+                    if think := delta.get("reasoning"):
+                        reasoning_parts.append(think)
                     piece = delta.get("content")
                     if piece:
                         if ttft is None:
@@ -211,6 +222,7 @@ class Client:
             ttft_s=ttft,
             finish_reason=finish_reason,
             content="".join(content_parts),
+            reasoning="".join(reasoning_parts),
             tool_calls=[fragments[i] for i in sorted(fragments)],
             prompt_tokens=prompt_tokens,
             completion_tokens=completion_tokens,

@@ -80,6 +80,16 @@ however different their point estimates look. The report prints a two-proportion
 p for exactly this reason. Raise `--reps` if you need to separate close models;
 the cost is linear.
 
+## The first run did not record reasoning
+
+Some models return chain-of-thought in `message.reasoning`, separate from
+`content`. The client discarded that field for the whole of the
+`20260830T132135Z` run, so its 56 empty responses can be shown to coincide with
+`finish_reason: length` and a large completion-token count — consistent with
+reasoning exhausting the budget — but cannot be shown directly to contain
+reasoning. The field is captured from `v0.1.0` onward; re-running would settle
+it, and re-grading cannot, because the data was never stored.
+
 ## Statistical caveats
 
 Trials within a task share a prompt and are not fully independent, so the true
@@ -94,6 +104,9 @@ six comparisons, and at α=0.05 roughly one in three runs will show a spurious
 - **Multi-turn recovery.** Whether a model that fails once succeeds on retry —
   which is the number a retry policy actually needs.
 - **Vision.** `vision` is benchmarked on text tool use only. No images are sent.
+- **Two-step plans.** `home_control` is scored on acting. `chat` and `coder`
+  mostly called `home_states` first, which is a reasonable opening move in a
+  multi-turn plan and is indistinguishable here from picking the wrong tool.
 - **Cost.** No pricing model, and the local models have no per-token price.
 - **Long context.** The largest prompt here is roughly 1.7k tokens. Behaviour at
   30k is not sampled, and it is where agent loops usually live by turn ten.

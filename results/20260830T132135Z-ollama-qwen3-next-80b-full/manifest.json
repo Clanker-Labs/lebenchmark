@@ -150,5 +150,7 @@
   "client_host": {
     "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.35",
     "python": "3.12.13"
-  }
+  },
+  "finished_at": "2026-08-30T17:57:13.009744+00:00",
+  "elapsed_s": 16537.3
 }

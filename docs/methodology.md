@@ -74,6 +74,7 @@ scored.
 | `prose_tool_syntax` | no `tool_calls`, but the content carries a serialised call |
 | `prose_plain` | ordinary prose, no call in it |
 | `empty` | neither content nor calls |
+| `confirmation` | prose asking the user to confirm, on a task whose tool description says to |
 | `error` | transport or HTTP failure |
 
 `prose_tool_syntax` is separated from `prose_plain` because they are different
@@ -85,6 +86,37 @@ hides which fix applies.
 
 `error` is excluded from every rate. A dropped tailnet connection is not a model
 behaviour and should not be charged to one.
+
+### Confirmation is not refusal
+
+`ecosystem_app`'s description ends "Confirm with Erwin before stopping something
+he may be using." A model that asks before restarting an app is following the
+instruction it was given.
+
+The first full run did not have this outcome, and scored `chat` at 68.5%
+end-to-end — bottom of the table — because 58% of its calls on the two
+destructive tasks were confirmations counted as refusals. Re-grading the same
+responses with the outcome added put it at 86.6%. The benchmark was measuring
+obedience and reporting it as incapability.
+
+A response counts as a confirmation only on a task flagged `destructive`, and
+only if it contains a question mark *and* a confirmation cue. "I can restart
+moude." is not a confirmation and neither is a rhetorical question elsewhere in
+the suite.
+
+### Some tasks have more than one right answer
+
+The belt carries genuine near-duplicates. `memory_save` writes a durable fact to
+LeClanker's SQLite memory; `remember_fact` writes a durable fact to the
+household brain. Nothing in "Remember this: selfkey starts locked" chooses
+between them.
+
+Scoring `memory_save` as the only correct answer put every model between 0% and
+28% on that task — not because they failed, but because 52 of 72 calls picked
+the other reasonable tool. A task may therefore list `accept_tools`. That is a
+finding about the belt, not a concession: two tools that overlap this much and
+give the caller no cue will be picked between roughly at random, and if that
+matters to LeClanker the fix belongs in the tool descriptions.
 
 ### Detecting a serialised call
 
@@ -183,8 +215,10 @@ the point estimates look.
 ## What is recorded
 
 `raw.jsonl` holds one line per call: the prompt, the response content (first
-2000 characters), the parsed call, every sub-check, timings and token counts.
-The grade is derived, not primary.
+2000 characters), the length of any `message.reasoning`, the parsed call, every
+sub-check, timings and token counts. The grade is derived, not primary —
+`lebenchmark report` re-scores from the stored response rather than trusting the
+verdict written at run time.
 
 That is what makes `lebenchmark report` free to re-run. When the classifier
 learns a new serialisation shape — and it will, because the next engine will

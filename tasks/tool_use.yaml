@@ -7,12 +7,17 @@
 - id: restart_app
   kind: tool
   expect_tool: ecosystem_app
+  destructive: true
   expect_args:
     app: { equals: moude }
     action: { equals: restart }
   rationale: >
     The single most common ecosystem request, and the one whose enum the model
-    has to hit exactly for the dashboard to accept it.
+    has to hit exactly for the dashboard to accept it. Marked destructive
+    because ecosystem_app's own description says "Confirm with Erwin before
+    stopping something he may be using", and a restart stops it first. A model
+    that asks before acting is following that instruction, so asking is scored
+    as compliance rather than as a refusal.
   prompts:
     - "moude has been flaky since this morning. Restart it."
     - "Can you bounce moude for me?"
@@ -37,6 +42,7 @@
 - id: stop_colloquial
   kind: tool
   expect_tool: ecosystem_app
+  destructive: true
   expect_args:
     app: { equals: ai212 }
     action: { equals: stop }
@@ -91,11 +97,19 @@
 - id: memory_save
   kind: tool
   expect_tool: memory_save
+  accept_tools: [remember_fact]
   expect_args:
     fact: { contains_any: [selfkey, lock] }
   rationale: >
     A write. Free text is checked for substring only — grading a model on
     phrasing a saved fact one exact way would measure wording, not tool use.
+    remember_fact is accepted too, and that is a finding rather than a
+    concession: the belt carries two tools that both save a durable fact, to
+    different stores, and neither description gives a user's phrasing any way
+    to choose. The first run scored memory_save alone and every model came out
+    between 0% and 28% — not because they failed, but because 52 of 72 calls
+    picked the other reasonable tool. capture_note stays wrong: it appends to
+    today's daily note, which is a log entry, not a durable fact.
   prompts:
     - "Remember this: selfkey starts locked after every restart and only a human can unlock it."
     - "Save the fact that selfkey comes up locked after a restart."

@@ -26,8 +26,23 @@ class Task:
     kind: str
     prompts: list[str]
     expect_tool: str | None = None
+    #: Other tools that are also a defensible reading of the request. The belt
+    #: has genuine near-duplicates — `memory_save` and `remember_fact` both save
+    #: a durable fact, to different stores, and nothing in a user's phrasing
+    #: picks between them. Scoring one as the only right answer measures the
+    #: ambiguity of the belt, not the model.
+    accept_tools: list[str] = field(default_factory=list)
     expect_args: dict[str, dict[str, Any]] = field(default_factory=dict)
+    #: The tool's own description instructs the agent to confirm before acting.
+    #: A model that asks instead of acting is obeying, not failing — see
+    #: `grade.py`. Without this flag the benchmark penalises exactly the
+    #: behaviour the tool description asks for.
+    destructive: bool = False
     rationale: str = ""
+
+    @property
+    def acceptable_tools(self) -> tuple[str, ...]:
+        return tuple(filter(None, (self.expect_tool, *self.accept_tools)))
 
     def prompt_for(self, rep: int) -> tuple[int, str]:
         """Cycle through paraphrases so repetitions spread across all of them."""
@@ -49,7 +64,7 @@ def _validate(task: Task, source: Path) -> None:
         raise TaskError(f"{where}: duplicate prompts")
 
     if task.kind == "abstain":
-        if task.expect_tool or task.expect_args:
+        if task.expect_tool or task.expect_args or task.accept_tools or task.destructive:
             raise TaskError(f"{where}: an abstain task must not expect a tool or arguments")
         return
 
@@ -60,6 +75,12 @@ def _validate(task: Task, source: Path) -> None:
             f"{where}: expect_tool {task.expect_tool!r} is not on the belt "
             f"({', '.join(sorted(TOOLS_BY_NAME))})"
         )
+
+    for alt in task.accept_tools:
+        if alt not in TOOLS_BY_NAME:
+            raise TaskError(f"{where}: accept_tools names {alt!r}, which is not on the belt")
+        if alt == task.expect_tool:
+            raise TaskError(f"{where}: accept_tools repeats expect_tool {alt!r}")
 
     properties = TOOLS_BY_NAME[task.expect_tool]["function"]["parameters"]["properties"]
     for arg, rule in task.expect_args.items():
@@ -92,7 +113,9 @@ def load(directory: str | Path = "tasks", only: list[str] | None = None) -> list
                 kind=entry["kind"],
                 prompts=list(entry["prompts"]),
                 expect_tool=entry.get("expect_tool"),
+                accept_tools=list(entry.get("accept_tools") or []),
                 expect_args=entry.get("expect_args") or {},
+                destructive=bool(entry.get("destructive")),
                 rationale=(entry.get("rationale") or "").strip(),
             )
             if task.id in seen:

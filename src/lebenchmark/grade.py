@@ -37,6 +37,9 @@ class Outcome(StrEnum):
     #: Neither content nor tool calls. Usually a thinking model that spent its
     #: budget reasoning — `finish_reason: length` with empty content.
     EMPTY = "empty"
+    #: Prose that asks the user to confirm before acting, on a task whose tool
+    #: description tells the agent to do exactly that. Obedience, not failure.
+    CONFIRMATION = "confirmation"
     #: Transport or HTTP failure. Not the model's fault; kept out of rates.
     ERROR = "error"
 
@@ -79,6 +82,22 @@ def detect_tool_syntax(content: str) -> str | None:
             if isinstance(item, dict) and item.get("name") in TOOLS_BY_NAME:
                 return "fenced_json"
     return None
+
+
+# A confirmation is a question, and it names the act. Both halves are required:
+# "I can restart moude." is not a confirmation, and "Are you sure?" attached to
+# nothing is not one either. Only consulted on tasks flagged `destructive`, so a
+# model that asks a rhetorical question elsewhere is unaffected.
+_CONFIRM_CUE = re.compile(
+    r"\b(confirm|are you sure|would you like me to|shall i|do you want me to|"
+    r"okay to|ok to|is it safe|before i (?:proceed|do|restart|stop)|"
+    r"let me know (?:if|when)|proceed\?)",
+    re.IGNORECASE,
+)
+
+
+def seeks_confirmation(content: str) -> bool:
+    return bool(content) and "?" in content and bool(_CONFIRM_CUE.search(content))
 
 
 def classify(
@@ -196,6 +215,22 @@ def grade(
     outcome, shape = classify(ok, content, tool_calls)
     g = Grade(outcome=outcome, syntax_shape=shape)
 
+    if (
+        task.kind == "tool"
+        and task.destructive
+        and outcome is Outcome.PROSE_PLAIN
+        and seeks_confirmation(content)
+    ):
+        # `ecosystem_app` is documented as "Confirm with Erwin before stopping
+        # something he may be using." A model that asks first is following the
+        # tool description it was given. Scoring that as a refusal measures
+        # compliance and calls it incapability — which is exactly what the first
+        # run of this benchmark did, and why this branch exists.
+        g.outcome = Outcome.CONFIRMATION
+        g.correct = True
+        g.notes.append("asked for confirmation before acting, as the tool description instructs")
+        return g
+
     if task.kind == "abstain":
         # Correct means answering without reaching for a tool. Prose that
         # serialises a call still counts as reaching for one.
@@ -216,9 +251,13 @@ def grade(
     if len(tool_calls) > 1:
         g.notes.append(f"{len(tool_calls)} calls emitted; graded the first")
     g.called_tool = (call.get("function") or {}).get("name")
-    g.right_tool = g.called_tool == task.expect_tool
+    g.right_tool = g.called_tool in task.acceptable_tools
     if not g.right_tool:
-        g.notes.append(f"called {g.called_tool!r}, expected {task.expect_tool!r}")
+        g.notes.append(
+            f"called {g.called_tool!r}, expected one of {list(task.acceptable_tools)}"
+        )
+    elif g.called_tool != task.expect_tool:
+        g.notes.append(f"called {g.called_tool!r}, an accepted alternative to {task.expect_tool!r}")
 
     args = _parse_args(call)
     if args is None:
@@ -234,7 +273,8 @@ def grade(
     g.args_schema_ok = not schema_problems
     g.notes.extend(schema_problems)
 
-    expect_problems = _match_expectations(args, task.expect_args or {})
+    expectations = task.expect_args if g.called_tool == task.expect_tool else {}
+    expect_problems = _match_expectations(args, expectations)
     g.args_match = not expect_problems
     g.notes.extend(expect_problems)
 

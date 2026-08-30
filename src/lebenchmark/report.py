@@ -13,12 +13,17 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from .grade import Outcome
+from .grade import Outcome, grade
 from .stats import Rate, latency, two_proportion_z, wilson
+from .tasks import Task, load
 
 # Errors are transport failures, not model behaviour. They are reported on their
 # own line and excluded from every rate — folding them in would blame a model
 # for a dropped tailnet connection.
+#: Filled in by `summarise` from the loaded suite, so the report does not have to
+#: re-read the task files for one lookup.
+_DESTRUCTIVE_IDS: set[str] = set()
+
 _MODEL_OUTCOMES = (
     Outcome.TOOL_CALL,
     Outcome.PROSE_TOOL_SYNTAX,
@@ -40,6 +45,50 @@ def read(run_dir: str | Path) -> list[dict[str, Any]]:
     return rows
 
 
+def regrade(rows: list[dict[str, Any]], tasks_dir: str | Path = "tasks") -> list[dict[str, Any]]:
+    """Re-score stored responses against the current grader.
+
+    This is the payoff for writing the response down rather than the verdict.
+    The first full run scored `chat` at 68.5% end to end, which was wrong: it
+    was asking for confirmation before restarting an app, exactly as
+    `ecosystem_app`'s description instructs, and the grader counted obedience as
+    a refusal. Fixing that cost no GPU time because `raw.jsonl` had kept what the
+    model actually said.
+
+    Rows whose task is no longer in the suite are returned untouched.
+    """
+    by_id: dict[str, Task] = {t.id: t for t in load(tasks_dir)}
+    out = []
+    for row in rows:
+        task = by_id.get(row["task_id"])
+        if task is None:
+            out.append(row)
+            continue
+        if row.get("emitted_call"):
+            # `called_args is None` recorded arguments that would not parse.
+            # Reconstruct that rather than silently turning it into `{}`.
+            arguments = (
+                json.dumps(row["called_args"])
+                if row.get("called_args") is not None
+                else "<<unparseable>>"
+            )
+            calls = [{"id": "restored", "type": "function",
+                      "function": {"name": row.get("called_tool"), "arguments": arguments}}]
+        else:
+            calls = []
+        g = grade(task, row["ok"], row.get("content", ""), calls)
+        fresh = dict(row)
+        fresh.update(
+            outcome=str(g.outcome), correct=g.correct, called_tool=g.called_tool,
+            called_args=g.called_args, syntax_shape=g.syntax_shape,
+            hallucinated_app=g.hallucinated_app, emitted_call=g.emitted_call,
+            right_tool=g.right_tool, args_schema_ok=g.args_schema_ok,
+            args_match=g.args_match, notes=g.notes,
+        )
+        out.append(fresh)
+    return out
+
+
 @dataclass(slots=True)
 class ModelSummary:
     model: str
@@ -51,6 +100,8 @@ class ModelSummary:
     prose_call: Rate
     #: Of the tool tasks: refused in plain prose.
     refusal: Rate
+    #: Of destructive tool tasks: asked to confirm before acting, as instructed.
+    confirmation: Rate
     #: Of the tool tasks: came back with nothing at all.
     empty: Rate
     #: Of structured calls: named the right tool.
@@ -85,6 +136,8 @@ def summarise_model(rows: list[dict[str, Any]]) -> ModelSummary:
 
     emitted = [r for r in tool_rows if r["emitted_call"]]
     right = [r for r in emitted if r["right_tool"]]
+    destructive = [r for r in tool_rows if r["outcome"] == Outcome.CONFIRMATION
+                   or r["task_id"] in _DESTRUCTIVE_IDS]
 
     latencies = [r["latency_s"] for r in live if r["latency_s"]]
     completion = sum(r["completion_tokens"] or 0 for r in live)
@@ -97,6 +150,9 @@ def summarise_model(rows: list[dict[str, Any]]) -> ModelSummary:
         emission=_rate(counts[Outcome.TOOL_CALL], n_tool),
         prose_call=_rate(counts[Outcome.PROSE_TOOL_SYNTAX], n_tool),
         refusal=_rate(counts[Outcome.PROSE_PLAIN], n_tool),
+        confirmation=_rate(
+            sum(1 for r in destructive if r["outcome"] == Outcome.CONFIRMATION), len(destructive)
+        ),
         empty=_rate(counts[Outcome.EMPTY], n_tool),
         tool_choice=_rate(len(right), len(emitted)),
         args_schema=_rate(sum(1 for r in right if r["args_schema_ok"]), len(right)),
@@ -112,7 +168,13 @@ def summarise_model(rows: list[dict[str, Any]]) -> ModelSummary:
     )
 
 
-def summarise(rows: list[dict[str, Any]]) -> dict[str, Any]:
+def summarise(rows: list[dict[str, Any]], tasks_dir: str | Path = "tasks") -> dict[str, Any]:
+    global _DESTRUCTIVE_IDS
+    try:
+        _DESTRUCTIVE_IDS = {t.id for t in load(tasks_dir) if t.kind == "tool" and t.destructive}
+    except Exception:  # noqa: BLE001 — a summary of an old run without its suite still works
+        _DESTRUCTIVE_IDS = set()
+
     toolcall = [r for r in rows if r["experiment"] == "toolcall"]
     budget = [r for r in rows if r["experiment"] == "budget"]
     lat = [r for r in rows if r["experiment"] == "latency"]
@@ -229,14 +291,17 @@ def render(summary: dict[str, Any], manifest: dict[str, Any]) -> str:
 
     w("## Tool-call emission\n")
     w("Of calls on tasks that require a tool. `prose call` is the documented "
-      "failure: a serialised call arriving as ordinary content.\n")
-    w("| model | n | structured call | prose call | plain refusal | empty |")
-    w("|---|---:|---|---|---|---|")
+      "failure: a serialised call arriving as ordinary content. `asked to "
+      "confirm` is of the two destructive tasks only, whose tool description "
+      "instructs the agent to confirm before acting — it is compliance, and is "
+      "scored as success.\n")
+    w("| model | n | structured call | prose call | plain refusal | asked to confirm | empty |")
+    w("|---|---:|---|---|---|---|---|")
     for name in names:
         m = models[name]
         w(f"| `{name}` | {m.emission.trials} | {m.emission.pct()} {m.emission.ci_pct()} "
           f"| {m.prose_call.pct()} {m.prose_call.ci_pct()} "
-          f"| {m.refusal.pct()} | {m.empty.pct()} |")
+          f"| {m.refusal.pct()} | {m.confirmation.pct()} | {m.empty.pct()} |")
     w("")
 
     w("## Tool-use correctness\n")
