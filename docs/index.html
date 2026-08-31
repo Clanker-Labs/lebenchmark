@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>lebenchmark — how reliably do local models call tools?</title>
+<meta name="description" content="1310 calls against four locally-served models on a real sixteen-tool agent belt. What the documented 8% prose-call rate actually is, and the grader bug that scored obedience as failure.">
+<meta name="color-scheme" content="dark">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/tokens.css">
+<link rel="stylesheet" href="assets/core.css">
+<link rel="stylesheet" href="assets/study.css">
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<header class="topbar">
+  <div class="wrap topbar__in">
+    <a class="topbar__mark" href="#top">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><g fill="none" stroke="#00D4AA" stroke-width="2.4" opacity=".55"><path d="M12 6.5H7.5v19H12"/><path d="M20 6.5h4.5v19H20"/></g><circle cx="16" cy="16" r="3.5" fill="#00D4AA"/></svg>
+      lebenchmark
+    </a>
+    <nav id="nav">
+      <a href="#claim">The claim</a>
+      <a href="#interval">Evidence</a>
+      <a href="#method">Method</a>
+      <a href="#prose">Prose calls</a>
+      <a href="#grader">The grader bug</a>
+      <a href="#cliff">The cliff</a>
+      <a href="#speed">Speed</a>
+      <a href="#takeaways">Takeaways</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<div class="hero">
+  <div class="wrap hero__grid">
+    <div>
+      <div class="eyebrow">Clanker Labs · study</div>
+      <h1>How reliably do local models actually call tools?</h1>
+      <p class="hero__lede">We had a number. It came from twelve calls. So we ran thirteen hundred and found out it belonged to a different model.</p>
+      <div class="runmeta" id="runmeta"></div>
+    </div>
+    <div class="hero__core">
+      <div class="clanker-core" data-state="thinking" id="core" aria-hidden="true"></div>
+    </div>
+  </div>
+</div>
+
+<!-- 01 ─────────────────────────────────────────────────────────────────── -->
+<section id="claim">
+  <div class="wrap measure">
+    <div class="sect__no">01</div>
+    <h2>One sentence, load-bearing</h2>
+    <p>A self-hosted agent runs nineteen applications from a chat window. Since it moved off a cloud provider, every model call in the fleet goes through one local gateway. Its documentation says this:</p>
+    <blockquote class="doc">
+      <strong>The Spark returns a tool call as prose in roughly 8% of calls.</strong> Measured: 11/12, then 1 failure printing <code>&lt;tools&gt;{"name": ...}&lt;/tools&gt;</code> with <code>finish_reason: stop</code>. It is not a broken gateway and not a wrong model — it is a rate. Anything calling tools in a loop must expect it and retry.
+      <cite>chezmoi · docs/AGENTS.md</cite>
+    </blockquote>
+    <p>The reasoning is right, and it changed the code: agent loops retry instead of erroring. The trouble is the evidence. One failure in twelve.</p>
+  </div>
+</section>
+
+<!-- 02 ─────────────────────────────────────────────────────────────────── -->
+<section id="interval">
+  <div class="wrap">
+    <div class="measure">
+      <div class="sect__no">02</div>
+      <h2>What twelve calls can tell you</h2>
+      <p>A rate quoted without an interval is the reason this study exists. Drag the sample size and watch what the same 8% is actually compatible with.</p>
+    </div>
+
+    <div class="panel" id="wilson-panel">
+      <div class="controls">
+        <div class="ctl">
+          <label for="wn">Calls observed</label>
+          <input type="range" id="wn" min="12" max="1200" step="1" value="12">
+          <output id="wn-out"></output>
+        </div>
+        <div class="ctl">
+          <label for="wp">Failure rate held at</label>
+          <input type="range" id="wp" min="1" max="30" step="0.5" value="8.3">
+          <output id="wp-out"></output>
+        </div>
+      </div>
+      <div class="plot"><svg id="wilson-svg" viewBox="0 0 760 190" role="img" aria-labelledby="wilson-t"><title id="wilson-t">Wilson 95% confidence interval as sample size grows</title></svg></div>
+      <div class="tiles" style="margin-bottom:0">
+        <div class="tile"><div class="tile__k">Point estimate</div><div class="tile__v accent" id="w-point">—</div><div class="tile__s" id="w-k">—</div></div>
+        <div class="tile"><div class="tile__k">95% interval</div><div class="tile__v" id="w-ci">—</div><div class="tile__s">Wilson score</div></div>
+        <div class="tile"><div class="tile__k">Can it separate 8% from</div><div class="tile__v" id="w-sep">—</div><div class="tile__s">nearest distinguishable rate</div></div>
+      </div>
+    </div>
+
+    <div class="measure">
+      <p>At <strong>n=12</strong> the interval runs from <strong>1.5% to 35.4%</strong>. That range spans three different engineering decisions: at 1.5% nobody notices, at 8% retries are load-bearing, and at 35% the model is not usable for tool calling and the fleet should go back to a cloud provider. The observation could not tell them apart, and re-reading it never will.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 ─────────────────────────────────────────────────────────────────── -->
+<section id="method">
+  <div class="wrap">
+    <div class="measure">
+      <div class="sect__no">03</div>
+      <h2>Two things we had to measure before designing anything</h2>
+      <h3>Temperature zero is not a sample</h3>
+      <p>Repetitions only count if the system is stochastic. It is not: the same prompt sent eight times returned <strong>byte-identical</strong> tool calls, 8/8, on two different models. Fifty trials at temperature 0 would have produced a table that looked exactly like a sample of fifty and a confidence interval that was fiction. Everything here runs at the production <code>temperature=0.3</code>, and every task carries four phrasings.</p>
+      <h3>Concurrency buys nothing</h3>
+      <p>The intuition that four workers get four times the work done is false on this engine. Generation throughput is flat; only latency moves.</p>
+    </div>
+    <div class="panel">
+      <div class="panel__head"><span class="panel__title">Throughput and latency against concurrency</span></div>
+      <p class="panel__note">Ollama serialises. Four workers finish the same work in the same wall-clock while each request waits behind three others — so a run at concurrency 4 costs nothing extra and returns latency figures inflated by queueing that bought nothing. All results here were collected at concurrency 1.</p>
+      <div class="plot"><svg id="conc-svg" viewBox="0 0 760 260" role="img" aria-labelledby="conc-t"><title id="conc-t">Generation throughput is flat from concurrency 1 to 4 while mean latency roughly triples</title></svg></div>
+      <div class="legend" id="conc-legend"></div>
+    </div>
+
+    <div class="measure">
+      <h3>Five outcomes, because two of them look identical</h3>
+      <p>The naive check is <code>if response.tool_calls:</code> — worked or didn't. That check cannot see the failure this study is about. When a model serialises a call into ordinary prose, the array is empty and the reply is chatty, so the check records a refusal. It was not a refusal: the model picked the right tool and wrote it into a field nobody reads. One is a parsing problem a retry clears; the other is a prompting problem retrying does nothing about.</p>
+    </div>
+
+    <div class="panel">
+      <div class="panel__head"><span class="panel__title">Try the classifier</span></div>
+      <p class="panel__note">The same five-way classifier the benchmark runs, in your browser. Load a real response from the run, or write your own and watch it get scored.</p>
+      <div class="controls">
+        <div class="ctl"><label for="ex-pick">Load a real response</label>
+          <div class="seg" id="ex-pick" role="group" aria-label="Example responses"></div>
+        </div>
+      </div>
+      <label class="tile__k" for="play" style="display:block;margin-bottom:.4rem">Model response</label>
+      <textarea class="play" id="play" spellcheck="false" aria-describedby="play-verdict"></textarea>
+      <div class="verdict" id="play-verdict"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 ─────────────────────────────────────────────────────────────────── -->
+<section id="prose">
+  <div class="wrap">
+    <div class="measure">
+      <div class="sect__no">04</div>
+      <h2>The failure is real. It belongs to a different model.</h2>
+      <p>The documented shape reproduces character for character — but on the fleet default it happens at <strong>0.5%</strong>, not 8%. The 8% belongs to <code>coder</code>, and <code>coder</code> fails in a completely different syntax.</p>
+    </div>
+    <div class="panel">
+      <div class="panel__head"><span class="panel__title">Prose-serialised calls, by model</span><span class="tile__s">bars are the point estimate; whiskers the Wilson 95% interval</span></div>
+      <p class="panel__note">Of calls on the twelve tasks that require a tool. A structured call is the only shape a caller can consume; anything here is a call the loop never sees.</p>
+      <div class="plot"><svg id="prose-svg" viewBox="0 0 760 250" role="img" aria-labelledby="prose-t"><title id="prose-t">Prose-serialised call rate by model with confidence intervals</title></svg></div>
+    </div>
+
+    <div class="measure">
+      <p>Two models, two syntaxes. A parser written from either sample recovers nothing from the other:</p>
+    </div>
+    <div class="panel" id="shapes"></div>
+
+    <div class="measure">
+      <div class="callout">
+        <p><strong>This matters more than the rate.</strong> Retrying is cheap, but in all thirteen <code>coder</code> cases the tool and the arguments were <em>correct</em> — only the envelope was wrong. A shape-agnostic parser recovers the call instead of spending another generation on it.</p>
+      </div>
+      <p>The failures are also concentrated rather than uniform. All thirteen fall on three of the twelve tool tasks and none on the other nine, so an aggregate figure overstates the risk almost everywhere and understates it on the requests that actually trigger it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 ─────────────────────────────────────────────────────────────────── -->
+<section id="grader">
+  <div class="wrap">
+    <div class="measure">
+      <div class="sect__no">05</div>
+      <h2>The benchmark was wrong about the best-behaved model</h2>
+      <p>The first scoring put <code>chat</code> last, at 68.5%. Then we read the responses it had marked as failures.</p>
+    </div>
+
+    <div class="panel">
+      <div class="panel__head"><span class="panel__title">What the grader threw away</span></div>
+      <div class="plot" style="padding:1rem 1.1rem">
+        <p class="mono" style="color:var(--color-muted);font-size:.82rem;margin:0 0 .5rem">prompt · "moude has been flaky since this morning. Restart it."</p>
+        <p style="margin:0;color:var(--color-heading)">"I need to confirm with you before restarting Moude, as it will stop the service. Are you sure you want to proceed with the restart now?"</p>
+        <p class="mono" style="color:var(--color-faint);font-size:.78rem;margin:.7rem 0 0">graded: no tool_calls → refusal → 0</p>
+      </div>
+      <p class="panel__note" style="margin-top:1rem">The tool's own description ends: <em>"Confirm with Erwin before stopping something he may be using."</em> The model was obeying it. The grader counted obedience as incapability.</p>
+    </div>
+
+    <div class="panel">
+      <div class="panel__head"><span class="panel__title">End-to-end success, before and after the fix</span></div>
+      <p class="panel__note">Same 1310 stored responses, re-scored with a <code>confirmation</code> outcome added. No further GPU time — which is the entire argument for storing responses rather than verdicts.</p>
+      <div class="plot"><svg id="slope-svg" viewBox="0 0 760 300" role="img" aria-labelledby="slope-t"><title id="slope-t">End-to-end accuracy before and after adding the confirmation outcome</title></svg></div>
+      <div class="legend" id="slope-legend"></div>
+    </div>
+
+    <div class="measure">
+      <p><code>chat</code> asked to confirm on <strong>58.3%</strong> of its calls on the two destructive tasks. No other model did it once. The ranking had inverted for the model behaving most carefully.</p>
+      <div class="callout">
+        <p>This is not specific to our benchmark. <strong>Any tool-use evaluation that scores "did it emit a call" penalises exactly the caution that safety-oriented tool descriptions are written to produce</strong> — and the penalty is invisible unless someone reads the prose.</p>
+      </div>
+      <p>A second error of the same kind: scoring <code>memory_save</code> as the only right answer to "remember this" put every model between 0% and 28%. Of 72 calls, 52 chose <code>remember_fact</code> — a different tool that also saves a durable fact, with nothing in either description telling a user's phrasing which to use. That is a finding about the tool belt, not about the models.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 ─────────────────────────────────────────────────────────────────── -->
+<section id="accuracy">
+  <div class="wrap">
+    <div class="measure">
+      <div class="sect__no">06</div>
+      <h2>Argument construction is solved. Choosing the tool is not.</h2>
+    </div>
+    <div class="tiles" id="acc-tiles"></div>
+    <div class="panel">
+      <div class="panel__head">
+        <span class="panel__title">Where the accuracy goes</span>
+        <div class="seg" id="acc-toggle" role="group" aria-label="Metric">
+          <button data-m="end_to_end" aria-pressed="true">End to end</button>
+          <button data-m="tool_choice" aria-pressed="false">Tool choice</button>
+          <button data-m="args_schema" aria-pressed="false">Arguments valid</button>
+          <button data-m="abstention" aria-pressed="false">Abstained correctly</button>
+        </div>
+      </div>
+      <p class="panel__note" id="acc-note"></p>
+      <div class="plot"><svg id="acc-svg" viewBox="0 0 760 250" role="img" aria-labelledby="acc-t"><title id="acc-t">Accuracy by model and metric</title></svg></div>
+    </div>
+    <div class="measure">
+      <p>Once a model emits a structured call to the right tool, the arguments are schema-valid essentially always — <strong>2 failures in 764 calls</strong>, no invented enum members, no missing required fields. Every point of loss is in selection. Effort spent on argument-repair logic in an agent loop is effort spent on the part that already works.</p>
+      <p>And the small models win. The two 8B aliases are indistinguishable from each other and both beat the 80B and the 30B. On a belt of sixteen clearly-described tools, parameter count did not buy tool-calling accuracy.</p>
+    </div>
+
+    <div class="panel">
+      <div class="panel__head"><span class="panel__title">Per task</span><span class="tile__s">hover a cell for the interval</span></div>
+      <p class="panel__note">A task where every model fails is usually a task problem; a task where they split is a model difference. <code>home_control</code> is the clearest split — the large models call <code>home_states</code> first, a reasonable opening move in a multi-turn plan that a single-turn benchmark cannot credit.</p>
+      <div id="heat"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 ─────────────────────────────────────────────────────────────────── -->
+<section id="cliff">
+  <div class="wrap">
+    <div class="measure">
+      <div class="sect__no">07</div>
+      <h2>The reasoning budget is a cliff, not a gradient</h2>
+      <p>Second agent turn: the model has called a tool, the full result is back in context, and it is asked an open question about it. Sweep the token budget and watch the answer disappear.</p>
+    </div>
+    <div class="panel">
+      <div class="panel__head"><span class="panel__title">Share of turns that returned nothing at all</span></div>
+      <p class="panel__note">Tools stay bound, as they are in production, so a model may answer, call another tool, or return nothing. "Returned nothing" means empty content — the budget went on reasoning and no answer came back.</p>
+      <div class="plot"><svg id="cliff-svg" viewBox="0 0 760 290" role="img" aria-labelledby="cliff-t"><title id="cliff-t">Empty-response rate against max_tokens for the thinking and non-thinking models</title></svg></div>
+      <div class="legend" id="cliff-legend"></div>
+      <div class="controls" style="margin:1.1rem 0 0">
+        <div class="ctl">
+          <label for="budget">Set the budget</label>
+          <input type="range" id="budget" min="0" max="4" step="1" value="4">
+          <output id="budget-out"></output>
+        </div>
+      </div>
+      <div class="tiles" style="margin-bottom:0" id="cliff-tiles"></div>
+    </div>
+    <div class="measure">
+      <p>There is no budget at which the model returns a <em>shorter</em> answer instead of no answer. Below the threshold the failure is total. Mean completion length plateaus around 2 750 tokens once the budget stops binding, so the documented setting of 8192 is not over-provisioned — it is about 3× the requirement, which is the right margin for a distribution whose failures are all-or-nothing.</p>
+      <p>The same failure turned up somewhere nobody was watching for it: on open-ended knowledge questions the 8B vision model spent its entire budget and returned nothing <strong>26%</strong> of the time.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 ─────────────────────────────────────────────────────────────────── -->
+<section id="speed">
+  <div class="wrap">
+    <div class="measure">
+      <div class="sect__no">08</div>
+      <h2>Same accuracy, seventeen times the wait</h2>
+    </div>
+    <div class="panel">
+      <div class="panel__head"><span class="panel__title">Accuracy against median latency</span><span class="tile__s">up and to the left is better</span></div>
+      <p class="panel__note">Bubble area is mean completion tokens — the reason for the gap. It is not generation speed: the thinking model generates faster per token and spends about 1 200 of them producing a one-line tool call. Thinking is billed in wall-clock.</p>
+      <div class="plot"><svg id="speed-svg" viewBox="0 0 760 320" role="img" aria-labelledby="speed-t"><title id="speed-t">End-to-end accuracy against median latency, sized by mean completion tokens</title></svg></div>
+    </div>
+    <div class="measure">
+      <p>The p95 is the number that matters for a chat surface. For <code>chat</code> it is 69.7 s against a median of 12.4 s — and a tail like that is not a slow response, it is a response that has not arrived.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 09 ─────────────────────────────────────────────────────────────────── -->
+<section id="takeaways">
+  <div class="wrap measure">
+    <div class="sect__no">09</div>
+    <h2>What we changed</h2>
+    <h3>For this fleet</h3>
+    <ul>
+      <li>The 8% figure belongs on <code>coder</code>, not on the gateway. Loops defaulting to <code>chat</code> are retrying against 0.5%.</li>
+      <li>A prose-call parser has to be shape-agnostic, and recovering the call beats retrying it.</li>
+      <li>Keep the token budget at 8192; treat 4096 as the floor. Below that the failure is total.</li>
+      <li>The vision model needs a budget guard for open-ended prose, or should not serve it.</li>
+      <li>Two memory tools with no disambiguating cue is a bug in the belt, not in the models.</li>
+      <li>Consider <code>coder</code> as the default for tool dispatch: same accuracy, 17× faster, with a known and recoverable failure envelope.</li>
+    </ul>
+    <h3>For anyone building one of these</h3>
+    <ul>
+      <li><strong>Check determinism before choosing a sample size.</strong> Ours would have been fifty copies of one sentence.</li>
+      <li><strong>Read the prose your grader is discarding.</strong> The largest error here cost 18 points on one model and inverted the ranking, and was only visible by reading responses scored zero.</li>
+      <li><strong>Store responses, not verdicts.</strong> Every correction was applied to a finished run for free. The one field we hadn't stored is the one thing that needs another 4.6 hours.</li>
+      <li><strong>A rate without an interval is not a result.</strong> The measurement that started this was correct. It was reported as "roughly 8%" when the evidence supported "somewhere between 1.5% and 35%".</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap measure">
+    <p>Run <span class="mono" id="foot-run"></span> · every figure on this page is generated from that run's <code>raw.jsonl</code>; the page hardcodes no numbers.</p>
+    <p>Method in <a href="https://github.com/Clanker-Labs/lebenchmark/blob/main/docs/methodology.md">methodology.md</a> · build it yourself in <a href="https://github.com/Clanker-Labs/lebenchmark/blob/main/docs/from-scratch.md">from-scratch.md</a> · what these numbers do not license you to say in <a href="https://github.com/Clanker-Labs/lebenchmark/blob/main/docs/limitations.md">limitations.md</a> · the full write-up in <a href="https://github.com/Clanker-Labs/lebenchmark/blob/main/paper/PAPER.md">PAPER.md</a>.</p>
+    <p>Network identifiers in the published data are redacted; every measurement, timing and token count is untouched. <a href="https://github.com/Clanker-Labs/lebenchmark">Clanker-Labs/lebenchmark</a></p>
+  </div>
+</footer>
+</main>
+
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+
+<script src="assets/core.js"></script>
+<script src="assets/study.js"></script>
+</body>
+</html>

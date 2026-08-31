@@ -1,0 +1,130 @@
+/**
+ * Clanker-Labs brand tokens as plain custom properties.
+ * Source of truth: Clanker-Labs/branding · brand/palette.md
+ *
+ * The palette itself is Unchained Labs' — Chain Teal on Midnight Navy, from
+ * Unchained-Labs/branding · tokens/tokens.css. This repo consumes it rather
+ * than restating it; if the two ever disagree, that repo wins. It supersedes
+ * Porchlight (graphite under porch amber), whose reasoning is kept in
+ * research/palette-study.md rather than deleted.
+ *
+ * Both spellings are defined. `--color-*` is the name every Clanker-Labs app
+ * already uses, so nothing has to be renamed to move; `--ul-*` is the upstream
+ * name, which the core component reads through `var(--ul-accent, …)`. Defining
+ * both means a page that pulls in this file repaints the core for free.
+ *
+ * Dark-only by design. See brand/palette.md § Light theme.
+ */
+:root {
+  /* Surfaces */
+  --color-bg: #0F1419;
+  --color-bg-raised: #171D26;
+  --color-surface: #171D26;
+  --color-bg-inset: #0B0F13;
+  --color-line: #232B35;
+  --color-line-strong: #313B47;
+
+  /* Text ramp */
+  --color-heading: #E8EDF2;
+  --color-body: #A8B3BF;
+  --color-muted: #7C8896;
+  --color-faint: #5A6673;
+
+  /* Accent — one hue, small budget */
+  --color-accent: #00D4AA;
+  --color-accent-dim: #00A888;
+  --color-accent-soft: rgba(0, 212, 170, 0.08);
+  --color-on-accent: #0F1419;
+
+  /* Status — a separate axis. Never decorative. */
+  --color-up: #4ADE80;
+  --color-warn: #E8B339;
+  --color-down: #E5484D;
+
+  /* --down measures 4.73:1 on the ground, the tightest token here and the only
+     one with no headroom left. On any raised surface it drops below the AA body
+     floor, so text (never dots or fills) uses this instead: same hue, same
+     saturation, luminance lifted until it clears on every surface we ship. */
+  --color-down-raised: #DE7D80;
+
+  /* Upstream spelling. Same values; see the header. */
+  --ul-bg: var(--color-bg);
+  --ul-bg-raised: var(--color-bg-raised);
+  --ul-bg-inset: var(--color-bg-inset);
+  --ul-line: var(--color-line);
+  --ul-line-strong: var(--color-line-strong);
+  --ul-heading: var(--color-heading);
+  --ul-body: var(--color-body);
+  --ul-muted: var(--color-muted);
+  --ul-faint: var(--color-faint);
+  --ul-accent: var(--color-accent);
+  --ul-accent-dim: var(--color-accent-dim);
+  --ul-accent-wash: var(--color-accent-soft);
+  --ul-on-accent: var(--color-on-accent);
+  --ul-up: var(--color-up);
+  --ul-warn: var(--color-warn);
+  --ul-down: var(--color-down);
+
+  /* Type */
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-label: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-prose: "Source Serif 4", ui-serif, Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 1.875rem;
+  --text-3xl: 2.375rem;
+
+  --tracking-label: 0.08em;
+  --measure: 68ch;
+
+  --ease-swift: cubic-bezier(0.645, 0.045, 0.355, 1);
+
+  /* --- the living core -----------------------------------------------------
+   * For the surfaces you TALK to rather than read. The palette above is for
+   * rooms; these are for an assistant that has to look like it is attending.
+   * See brand/core.md — every hue here is a state readout, not a decoration.
+   *
+   * Each is the palette token, not a copy of its value, so the core cannot
+   * drift from the surface it sits on. Two of the five come off the status
+   * axis, which the palette otherwise keeps strictly separate from the accent;
+   * the exemption is narrow and deliberate, because `thinking` and `alert`
+   * ARE status — "working" and "wrong" — so they read the axis rather than
+   * colliding with it. `speaking` is heading ink rather than a hue, so the
+   * loudest state does not invent a sixth colour, and `idle`/`listening` are
+   * one hue at two luminances, which is the distinction the palette already
+   * draws between accent and accent-dim.
+   */
+  --core-idle: var(--color-accent-dim);
+  --core-listening: var(--color-accent);
+  --core-thinking: var(--color-warn);
+  --core-speaking: var(--color-heading);
+  --core-alert: var(--color-down);
+
+  /* The core needs a ground that reads as depth rather than as a wall, and
+   * Midnight Navy is already that — so these are the surface tokens, not a
+   * second dark. */
+  --core-void: var(--color-bg);
+  --core-void-raised: var(--color-bg-raised);
+
+  /* One breath. Slow enough to read as alive rather than as a pulse: a heart
+   * rate reads as alarm. */
+  --core-breath: 6s;
+}
+
+/* The label role is a setting, not just a family. */
+.label {
+  font-family: var(--font-label);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-label);
+  color: var(--color-faint);
+}
+
+/* Ports, uptimes, byte counts — anything that stacks in a column. */
+.tabular { font-variant-numeric: tabular-nums; }

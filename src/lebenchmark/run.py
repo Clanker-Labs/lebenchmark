@@ -21,6 +21,7 @@ from typing import Any
 
 from . import __version__
 from .client import Client, Response
+from .config import Config
 from .fixtures import BUDGET_QUESTION, ecosystem_status_payload
 from .grade import grade
 from .tasks import Task
@@ -280,7 +281,7 @@ def execute(
     started = time.time()
 
     def worker() -> None:
-        with Client(base_url) as client:
+        with Client(base_url, api_key=Config.load().api_key) as client:
             while True:
                 unit = work.get()
                 if unit is None:
@@ -388,7 +389,7 @@ def calibrate(
         for concurrency in concurrencies:
             jobs = [prompts[i % len(prompts)] for i in range(reps)]
             started = time.perf_counter()
-            with Client(base_url) as client:
+            with Client(base_url, api_key=Config.load().api_key) as client:
                 def one(prompt: str, _c: Client = client, _m: str = model) -> Response:
                     return _c.complete(
                         model=_m,

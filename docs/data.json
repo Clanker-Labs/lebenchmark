@@ -1,0 +1,1386 @@
+{
+ "generated_from": "20260830T132135Z-ollama-qwen3-next-80b-full",
+ "engine": "ollama",
+ "preset": "qwen3-next-80b",
+ "started_at": "2026-08-30T13:21:35.681906+00:00",
+ "elapsed_s": 16537.3,
+ "temperature": 0.3,
+ "max_tokens": 8192,
+ "tool_belt_size": 16,
+ "total_calls": 1310,
+ "errors": 1,
+ "models": [
+  "chat",
+  "coder",
+  "fast",
+  "vision"
+ ],
+ "emission": {
+  "chat": {
+   "structured": {
+    "point": 0.8981481481481481,
+    "low": 0.8506093749352146,
+    "high": 0.9317726239955952,
+    "n": 216,
+    "k": 194
+   },
+   "prose_call": {
+    "point": 0.004629629629629629,
+    "low": 0.0008177113226299475,
+    "high": 0.025753522565780992,
+    "n": 216,
+    "k": 1
+   },
+   "refusal": {
+    "point": 0.0,
+    "low": 0.0,
+    "high": 0.01747376878456431,
+    "n": 216,
+    "k": 0
+   },
+   "confirmation": {
+    "point": 0.5833333333333334,
+    "low": 0.4220025157487166,
+    "high": 0.7285943794855394,
+    "n": 36,
+    "k": 21
+   },
+   "empty": {
+    "point": 0.0,
+    "low": 0.0,
+    "high": 0.01747376878456431,
+    "n": 216,
+    "k": 0
+   }
+  },
+  "coder": {
+   "structured": {
+    "point": 0.9398148148148148,
+    "low": 0.8997655664098385,
+    "high": 0.964493618455591,
+    "n": 216,
+    "k": 203
+   },
+   "prose_call": {
+    "point": 0.06018518518518518,
+    "low": 0.03550638154440902,
+    "high": 0.10023443359016143,
+    "n": 216,
+    "k": 13
+   },
+   "refusal": {
+    "point": 0.0,
+    "low": 0.0,
+    "high": 0.01747376878456431,
+    "n": 216,
+    "k": 0
+   },
+   "confirmation": {
+    "point": 0.0,
+    "low": 0.0,
+    "high": 0.09641862859446367,
+    "n": 36,
+    "k": 0
+   },
+   "empty": {
+    "point": 0.0,
+    "low": 0.0,
+    "high": 0.01747376878456431,
+    "n": 216,
+    "k": 0
+   }
+  },
+  "fast": {
+   "structured": {
+    "point": 1.0,
+    "low": 0.9824463845132672,
+    "high": 1.0,
+    "n": 215,
+    "k": 215
+   },
+   "prose_call": {
+    "point": 0.0,
+    "low": 0.0,
+    "high": 0.017553615486732756,
+    "n": 215,
+    "k": 0
+   },
+   "refusal": {
+    "point": 0.0,
+    "low": 0.0,
+    "high": 0.017553615486732756,
+    "n": 215,
+    "k": 0
+   },
+   "confirmation": {
+    "point": 0.0,
+    "low": 0.0,
+    "high": 0.09641862859446367,
+    "n": 36,
+    "k": 0
+   },
+   "empty": {
+    "point": 0.0,
+    "low": 0.0,
+    "high": 0.017553615486732756,
+    "n": 215,
+    "k": 0
+   }
+  },
+  "vision": {
+   "structured": {
+    "point": 1.0,
+    "low": 0.9825262312154358,
+    "high": 1.0,
+    "n": 216,
+    "k": 216
+   },
+   "prose_call": {
+    "point": 0.0,
+    "low": 0.0,
+    "high": 0.01747376878456431,
+    "n": 216,
+    "k": 0
+   },
+   "refusal": {
+    "point": 0.0,
+    "low": 0.0,
+    "high": 0.01747376878456431,
+    "n": 216,
+    "k": 0
+   },
+   "confirmation": {
+    "point": 0.0,
+    "low": 0.0,
+    "high": 0.09641862859446367,
+    "n": 36,
+    "k": 0
+   },
+   "empty": {
+    "point": 0.0,
+    "low": 0.0,
+    "high": 0.01747376878456431,
+    "n": 216,
+    "k": 0
+   }
+  }
+ },
+ "accuracy": {
+  "chat": {
+   "tool_choice": {
+    "point": 0.8556701030927835,
+    "low": 0.7993105892498205,
+    "high": 0.8982176276497065,
+    "n": 194,
+    "k": 166
+   },
+   "args_schema": {
+    "point": 1.0,
+    "low": 0.9773820900540565,
+    "high": 0.9999999999999999,
+    "n": 166,
+    "k": 166
+   },
+   "end_to_end": {
+    "point": 0.8657407407407407,
+    "low": 0.8138319169940197,
+    "high": 0.9048678262098638,
+    "n": 216,
+    "k": 187
+   },
+   "abstention": {
+    "point": 1.0,
+    "low": 0.9335864119091037,
+    "high": 1.0,
+    "n": 54,
+    "k": 54
+   },
+   "first_pass_end_to_end": {
+    "point": 0.6851851851851852,
+    "low": 0.6204702363472716,
+    "high": 0.7434283678065936,
+    "n": 216,
+    "k": 148
+   }
+  },
+  "coder": {
+   "tool_choice": {
+    "point": 0.9211822660098522,
+    "low": 0.8758152199565495,
+    "high": 0.9509049210391479,
+    "n": 203,
+    "k": 187
+   },
+   "args_schema": {
+    "point": 1.0,
+    "low": 0.9798709418570136,
+    "high": 1.0,
+    "n": 187,
+    "k": 187
+   },
+   "end_to_end": {
+    "point": 0.8657407407407407,
+    "low": 0.8138319169940197,
+    "high": 0.9048678262098638,
+    "n": 216,
+    "k": 187
+   },
+   "abstention": {
+    "point": 1.0,
+    "low": 0.9335864119091037,
+    "high": 1.0,
+    "n": 54,
+    "k": 54
+   },
+   "first_pass_end_to_end": {
+    "point": 0.8009259259259259,
+    "low": 0.74262301011857,
+    "high": 0.8487122216314609,
+    "n": 216,
+    "k": 173
+   }
+  },
+  "fast": {
+   "tool_choice": {
+    "point": 0.958139534883721,
+    "low": 0.9223717802064653,
+    "high": 0.9778232790917376,
+    "n": 215,
+    "k": 206
+   },
+   "args_schema": {
+    "point": 0.9902912621359223,
+    "low": 0.9652980447338898,
+    "high": 0.9973334635259029,
+    "n": 206,
+    "k": 204
+   },
+   "end_to_end": {
+    "point": 0.9488372093023256,
+    "low": 0.9107224681986028,
+    "high": 0.9711945188295859,
+    "n": 215,
+    "k": 204
+   },
+   "abstention": {
+    "point": 0.9814814814814815,
+    "low": 0.9022856251121808,
+    "high": 0.9967235122817709,
+    "n": 54,
+    "k": 53
+   },
+   "first_pass_end_to_end": {
+    "point": 0.9069767441860465,
+    "low": 0.860691640308983,
+    "high": 0.9389740215041413,
+    "n": 215,
+    "k": 195
+   }
+  },
+  "vision": {
+   "tool_choice": {
+    "point": 0.9490740740740741,
+    "low": 0.9111251277171358,
+    "high": 0.971328987355987,
+    "n": 216,
+    "k": 205
+   },
+   "args_schema": {
+    "point": 1.0,
+    "low": 0.9816058610086978,
+    "high": 0.9999999999999999,
+    "n": 205,
+    "k": 205
+   },
+   "end_to_end": {
+    "point": 0.9490740740740741,
+    "low": 0.9111251277171358,
+    "high": 0.971328987355987,
+    "n": 216,
+    "k": 205
+   },
+   "abstention": {
+    "point": 0.6666666666666666,
+    "low": 0.5336096360112935,
+    "high": 0.7775858346250742,
+    "n": 54,
+    "k": 36
+   },
+   "first_pass_end_to_end": {
+    "point": 0.8981481481481481,
+    "low": 0.8506093749352146,
+    "high": 0.9317726239955952,
+    "n": 216,
+    "k": 194
+   }
+  }
+ },
+ "speed": {
+  "chat": {
+   "mean": 20.825843333333335,
+   "p50": 12.3886,
+   "p95": 69.69766999999999,
+   "gen_tok_s": 36.39868605561071,
+   "ttft_p50": 23.4685,
+   "mean_completion_tokens": 1314.45
+  },
+  "coder": {
+   "mean": 1.1975085185185184,
+   "p50": 0.7121,
+   "p95": 3.640989999999998,
+   "gen_tok_s": 52.225716789148336,
+   "ttft_p50": 0.69765,
+   "mean_completion_tokens": 37.0
+  },
+  "fast": {
+   "mean": 7.660505947955391,
+   "p50": 5.7217,
+   "p95": 17.6285,
+   "gen_tok_s": 34.08056219994981,
+   "ttft_p50": 7.55575,
+   "mean_completion_tokens": 282.4
+  },
+  "vision": {
+   "mean": 17.193422592592594,
+   "p50": 8.22805,
+   "p95": 40.21044499999994,
+   "gen_tok_s": 34.34969888679006,
+   "ttft_p50": 10.0033,
+   "mean_completion_tokens": 419.15
+  }
+ },
+ "syntax_shapes": {
+  "chat": {
+   "tools_tag": 1
+  },
+  "coder": {
+   "function_tag": 13
+  },
+  "fast": {},
+  "vision": {}
+ },
+ "budget": {
+  "chat": [
+   {
+    "max_tokens": 512,
+    "n": 15,
+    "empty": {
+     "point": 1.0,
+     "low": 0.7961166989641515,
+     "high": 1.0,
+     "n": 15,
+     "k": 15
+    },
+    "answered": {
+     "point": 0.0,
+     "low": 0.0,
+     "high": 0.20388330103584862,
+     "n": 15,
+     "k": 0
+    },
+    "another_call": {
+     "point": 0.0,
+     "low": 0.0,
+     "high": 0.20388330103584862,
+     "n": 15,
+     "k": 0
+    },
+    "truncated": {
+     "point": 1.0,
+     "low": 0.7961166989641515,
+     "high": 1.0,
+     "n": 15,
+     "k": 15
+    },
+    "mean_completion_tokens": 512.0
+   },
+   {
+    "max_tokens": 1024,
+    "n": 15,
+    "empty": {
+     "point": 1.0,
+     "low": 0.7961166989641515,
+     "high": 1.0,
+     "n": 15,
+     "k": 15
+    },
+    "answered": {
+     "point": 0.0,
+     "low": 0.0,
+     "high": 0.20388330103584862,
+     "n": 15,
+     "k": 0
+    },
+    "another_call": {
+     "point": 0.0,
+     "low": 0.0,
+     "high": 0.20388330103584862,
+     "n": 15,
+     "k": 0
+    },
+    "truncated": {
+     "point": 1.0,
+     "low": 0.7961166989641515,
+     "high": 1.0,
+     "n": 15,
+     "k": 15
+    },
+    "mean_completion_tokens": 1024.0
+   },
+   {
+    "max_tokens": 2048,
+    "n": 15,
+    "empty": {
+     "point": 0.4666666666666667,
+     "low": 0.24809535365737387,
+     "high": 0.698830199745016,
+     "n": 15,
+     "k": 7
+    },
+    "answered": {
+     "point": 0.5333333333333333,
+     "low": 0.30116980025498397,
+     "high": 0.7519046463426261,
+     "n": 15,
+     "k": 8
+    },
+    "another_call": {
+     "point": 0.0,
+     "low": 0.0,
+     "high": 0.20388330103584862,
+     "n": 15,
+     "k": 0
+    },
+    "truncated": {
+     "point": 0.8666666666666667,
+     "low": 0.6211801716767764,
+     "high": 0.9626387408969346,
+     "n": 15,
+     "k": 13
+    },
+    "mean_completion_tokens": 2006.7333333333333
+   },
+   {
+    "max_tokens": 4096,
+    "n": 15,
+    "empty": {
+     "point": 0.06666666666666667,
+     "low": 0.011866895493268553,
+     "high": 0.2981652987378003,
+     "n": 15,
+     "k": 1
+    },
+    "answered": {
+     "point": 0.9333333333333333,
+     "low": 0.7018347012621998,
+     "high": 0.9881331045067315,
+     "n": 15,
+     "k": 14
+    },
+    "another_call": {
+     "point": 0.0,
+     "low": 0.0,
+     "high": 0.20388330103584862,
+     "n": 15,
+     "k": 0
+    },
+    "truncated": {
+     "point": 0.06666666666666667,
+     "low": 0.011866895493268553,
+     "high": 0.2981652987378003,
+     "n": 15,
+     "k": 1
+    },
+    "mean_completion_tokens": 2757.6
+   },
+   {
+    "max_tokens": 8192,
+    "n": 15,
+    "empty": {
+     "point": 0.0,
+     "low": 0.0,
+     "high": 0.20388330103584862,
+     "n": 15,
+     "k": 0
+    },
+    "answered": {
+     "point": 1.0,
+     "low": 0.7961166989641515,
+     "high": 1.0,
+     "n": 15,
+     "k": 15
+    },
+    "another_call": {
+     "point": 0.0,
+     "low": 0.0,
+     "high": 0.20388330103584862,
+     "n": 15,
+     "k": 0
+    },
+    "truncated": {
+     "point": 0.0,
+     "low": 0.0,
+     "high": 0.20388330103584862,
+     "n": 15,
+     "k": 0
+    },
+    "mean_completion_tokens": 2741.0666666666666
+   }
+  ],
+  "coder": [
+   {
+    "max_tokens": 512,
+    "n": 15,
+    "empty": {
+     "point": 0.0,
+     "low": 0.0,
+     "high": 0.20388330103584862,
+     "n": 15,
+     "k": 0
+    },
+    "answered": {
+     "point": 0.8,
+     "low": 0.5481455128483065,
+     "high": 0.9295245065301844,
+     "n": 15,
+     "k": 12
+    },
+    "another_call": {
+     "point": 0.7333333333333333,
+     "low": 0.4804956594401943,
+     "high": 0.8910254667430761,
+     "n": 15,
+     "k": 11
+    },
+    "truncated": {
+     "point": 0.06666666666666667,
+     "low": 0.011866895493268553,
+     "high": 0.2981652987378003,
+     "n": 15,
+     "k": 1
+    },
+    "mean_completion_tokens": 229.86666666666667
+   },
+   {
+    "max_tokens": 1024,
+    "n": 15,
+    "empty": {
+     "point": 0.0,
+     "low": 0.0,
+     "high": 0.20388330103584862,
+     "n": 15,
+     "k": 0
+    },
+    "answered": {
+     "point": 0.4666666666666667,
+     "low": 0.24809535365737387,
+     "high": 0.698830199745016,
+     "n": 15,
+     "k": 7
+    },
+    "another_call": {
+     "point": 0.8666666666666667,
+     "low": 0.6211801716767764,
+     "high": 0.9626387408969346,
+     "n": 15,
+     "k": 13
+    },
+    "truncated": {
+     "point": 0.0,
+     "low": 0.0,
+     "high": 0.20388330103584862,
+     "n": 15,
+     "k": 0
+    },
+    "mean_completion_tokens": 168.86666666666667
+   },
+   {
+    "max_tokens": 2048,
+    "n": 15,
+    "empty": {
+     "point": 0.0,
+     "low": 0.0,
+     "high": 0.20388330103584862,
+     "n": 15,
+     "k": 0
+    },
+    "answered": {
+     "point": 0.5333333333333333,
+     "low": 0.30116980025498397,
+     "high": 0.7519046463426261,
+     "n": 15,
+     "k": 8
+    },
+    "another_call": {
+     "point": 0.8666666666666667,
+     "low": 0.6211801716767764,
+     "high": 0.9626387408969346,
+     "n": 15,
+     "k": 13
+    },
+    "truncated": {
+     "point": 0.0,
+     "low": 0.0,
+     "high": 0.20388330103584862,
+     "n": 15,
+     "k": 0
+    },
+    "mean_completion_tokens": 181.93333333333334
+   },
+   {
+    "max_tokens": 4096,
+    "n": 15,
+    "empty": {
+     "point": 0.0,
+     "low": 0.0,
+     "high": 0.20388330103584862,
+     "n": 15,
+     "k": 0
+    },
+    "answered": {
+     "point": 0.5333333333333333,
+     "low": 0.30116980025498397,
+     "high": 0.7519046463426261,
+     "n": 15,
+     "k": 8
+    },
+    "another_call": {
+     "point": 0.8,
+     "low": 0.5481455128483065,
+     "high": 0.9295245065301844,
+     "n": 15,
+     "k": 12
+    },
+    "truncated": {
+     "point": 0.0,
+     "low": 0.0,
+     "high": 0.20388330103584862,
+     "n": 15,
+     "k": 0
+    },
+    "mean_completion_tokens": 181.0
+   },
+   {
+    "max_tokens": 8192,
+    "n": 15,
+    "empty": {
+     "point": 0.0,
+     "low": 0.0,
+     "high": 0.20388330103584862,
+     "n": 15,
+     "k": 0
+    },
+    "answered": {
+     "point": 0.6666666666666666,
+     "low": 0.41713547738519774,
+     "high": 0.8482367556028526,
+     "n": 15,
+     "k": 10
+    },
+    "another_call": {
+     "point": 0.8,
+     "low": 0.5481455128483065,
+     "high": 0.9295245065301844,
+     "n": 15,
+     "k": 12
+    },
+    "truncated": {
+     "point": 0.0,
+     "low": 0.0,
+     "high": 0.20388330103584862,
+     "n": 15,
+     "k": 0
+    },
+    "mean_completion_tokens": 207.2
+   }
+  ]
+ },
+ "per_task": {
+  "explain_idempotent": {
+   "chat": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   },
+   "coder": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   },
+   "fast": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   },
+   "vision": {
+    "point": 0.7777777777777778,
+    "low": 0.5478541568378739,
+    "high": 0.9099907189139831,
+    "n": 18,
+    "k": 14
+   }
+  },
+  "explain_homelab": {
+   "chat": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   },
+   "coder": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   },
+   "fast": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   },
+   "vision": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   }
+  },
+  "hardware_opinion": {
+   "chat": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   },
+   "coder": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   },
+   "fast": {
+    "point": 0.9444444444444444,
+    "low": 0.7424269921812741,
+    "high": 0.990124809021697,
+    "n": 18,
+    "k": 17
+   },
+   "vision": {
+    "point": 0.2222222222222222,
+    "low": 0.09000928108601694,
+    "high": 0.45214584316212625,
+    "n": 18,
+    "k": 4
+   }
+  },
+  "restart_app": {
+   "chat": {
+    "point": 0.8888888888888888,
+    "low": 0.672002348698212,
+    "high": 0.9689804773543876,
+    "n": 18,
+    "k": 16
+   },
+   "coder": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   },
+   "fast": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   },
+   "vision": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   }
+  },
+  "app_logs": {
+   "chat": {
+    "point": 0.7777777777777778,
+    "low": 0.5478541568378739,
+    "high": 0.9099907189139831,
+    "n": 18,
+    "k": 14
+   },
+   "coder": {
+    "point": 0.7777777777777778,
+    "low": 0.5478541568378739,
+    "high": 0.9099907189139831,
+    "n": 18,
+    "k": 14
+   },
+   "fast": {
+    "point": 0.7222222222222222,
+    "low": 0.4912734343970254,
+    "high": 0.8750024662044601,
+    "n": 18,
+    "k": 13
+   },
+   "vision": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   }
+  },
+  "stop_colloquial": {
+   "chat": {
+    "point": 0.7222222222222222,
+    "low": 0.4912734343970254,
+    "high": 0.8750024662044601,
+    "n": 18,
+    "k": 13
+   },
+   "coder": {
+    "point": 0.5555555555555556,
+    "low": 0.33716415642042774,
+    "high": 0.7544048187299437,
+    "n": 18,
+    "k": 10
+   },
+   "fast": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   },
+   "vision": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   }
+  },
+  "fleet_status": {
+   "chat": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   },
+   "coder": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   },
+   "fast": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   },
+   "vision": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   }
+  },
+  "chat_search": {
+   "chat": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   },
+   "coder": {
+    "point": 0.8333333333333334,
+    "low": 0.6077796189608428,
+    "high": 0.9416342319413856,
+    "n": 18,
+    "k": 15
+   },
+   "fast": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   },
+   "vision": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   }
+  },
+  "chat_list": {
+   "chat": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   },
+   "coder": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   },
+   "fast": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   },
+   "vision": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   }
+  },
+  "memory_save": {
+   "chat": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   },
+   "coder": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   },
+   "fast": {
+    "point": 0.7777777777777778,
+    "low": 0.5478541568378739,
+    "high": 0.9099907189139831,
+    "n": 18,
+    "k": 14
+   },
+   "vision": {
+    "point": 0.7777777777777778,
+    "low": 0.5478541568378739,
+    "high": 0.9099907189139831,
+    "n": 18,
+    "k": 14
+   }
+  },
+  "memory_search": {
+   "chat": {
+    "point": 0.8333333333333334,
+    "low": 0.6077796189608428,
+    "high": 0.9416342319413856,
+    "n": 18,
+    "k": 15
+   },
+   "coder": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   },
+   "fast": {
+    "point": 0.8888888888888888,
+    "low": 0.672002348698212,
+    "high": 0.9689804773543876,
+    "n": 18,
+    "k": 16
+   },
+   "vision": {
+    "point": 0.6666666666666666,
+    "low": 0.43749467295945105,
+    "high": 0.837212252491663,
+    "n": 18,
+    "k": 12
+   }
+  },
+  "home_control": {
+   "chat": {
+    "point": 0.2222222222222222,
+    "low": 0.09000928108601694,
+    "high": 0.45214584316212625,
+    "n": 18,
+    "k": 4
+   },
+   "coder": {
+    "point": 0.2222222222222222,
+    "low": 0.09000928108601694,
+    "high": 0.45214584316212625,
+    "n": 18,
+    "k": 4
+   },
+   "fast": {
+    "point": 1.0,
+    "low": 0.8156818649911483,
+    "high": 1.0,
+    "n": 17,
+    "k": 17
+   },
+   "vision": {
+    "point": 0.9444444444444444,
+    "low": 0.7424269921812741,
+    "high": 0.990124809021697,
+    "n": 18,
+    "k": 17
+   }
+  },
+  "network_status": {
+   "chat": {
+    "point": 0.9444444444444444,
+    "low": 0.7424269921812741,
+    "high": 0.990124809021697,
+    "n": 18,
+    "k": 17
+   },
+   "coder": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   },
+   "fast": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   },
+   "vision": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   }
+  },
+  "brain_today": {
+   "chat": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   },
+   "coder": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   },
+   "fast": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   },
+   "vision": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   }
+  },
+  "capture_note": {
+   "chat": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   },
+   "coder": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   },
+   "fast": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   },
+   "vision": {
+    "point": 1.0,
+    "low": 0.8241207763533425,
+    "high": 1.0,
+    "n": 18,
+    "k": 18
+   }
+  }
+ },
+ "tasks": {
+  "explain_idempotent": {
+   "kind": "abstain",
+   "expect": null,
+   "destructive": false,
+   "prompts": [
+    "What does idempotent mean when people say a deploy script is idempotent?",
+    "Explain what it means for a script to be idempotent.",
+    "I keep seeing 'idempotent' in our docs \u2014 what does it actually mean?",
+    "Define idempotent in the context of deployment scripts."
+   ],
+   "rationale": "General knowledge, no live state. Nothing on the belt can answer it."
+  },
+  "explain_homelab": {
+   "kind": "abstain",
+   "expect": null,
+   "destructive": false,
+   "prompts": [
+    "Write me two sentences explaining to a friend what a homelab is.",
+    "How would you describe a homelab to someone non-technical? A couple of sentences.",
+    "Give me a short, plain explanation of what a homelab is.",
+    "In two sentences, what's a homelab?"
+   ],
+   "rationale": "A writing request. The nearest tool, capture_note, writes text \u2014 so this catches a model that maps \"write\" onto the writing tool."
+  },
+  "hardware_opinion": {
+   "kind": "abstain",
+   "expect": null,
+   "destructive": false,
+   "prompts": [
+    "In general, what's a GB10 better at than a consumer GPU like a 4090?",
+    "Broadly speaking, how does a GB10 compare to a 4090 for inference?",
+    "What are the general trade-offs of unified memory versus discrete VRAM?",
+    "Why would someone pick a unified-memory machine for running models?"
+   ],
+   "rationale": "Mentions this machine's own hardware, so it reads like a status question while being pure background knowledge. Bait for a reflexive ecosystem_status or network_status call."
+  },
+  "restart_app": {
+   "kind": "tool",
+   "expect": "ecosystem_app",
+   "destructive": true,
+   "prompts": [
+    "moude has been flaky since this morning. Restart it.",
+    "Can you bounce moude for me?",
+    "moude needs a restart.",
+    "Please restart the moude app."
+   ],
+   "rationale": "The single most common ecosystem request, and the one whose enum the model has to hit exactly for the dashboard to accept it. Marked destructive because ecosystem_app's own description says \"Confirm with Erwin before stopping something he may be using\", and a restart stops it first. A model that asks before acting is following that instruction, so asking is scored as compliance rather than as a refusal."
+  },
+  "app_logs": {
+   "kind": "tool",
+   "expect": "ecosystem_app",
+   "destructive": false,
+   "prompts": [
+    "Show me what clankergram has been logging.",
+    "I want clankergram's logs.",
+    "What's in the clankergram logs right now?",
+    "Pull up the logs for clankergram."
+   ],
+   "rationale": "Same tool, different enum member. Separates \"knows the tool\" from \"knows which action\"."
+  },
+  "stop_colloquial": {
+   "kind": "tool",
+   "expect": "ecosystem_app",
+   "destructive": true,
+   "prompts": [
+    "Kill ai212, I don't want it running while I'm out.",
+    "Shut ai212 down please.",
+    "Take ai212 down for now.",
+    "Turn off the ai212 container."
+   ],
+   "rationale": "Nobody says \"stop\". They say kill, shut down, take it down. The enum only has `stop`, so this measures whether colloquial phrasing survives the mapping \u2014 the failure that produces a plausible call the dashboard rejects."
+  },
+  "fleet_status": {
+   "kind": "tool",
+   "expect": "ecosystem_status",
+   "destructive": false,
+   "prompts": [
+    "Is anything down on the box right now?",
+    "Give me the status of everything running.",
+    "What's the health of the fleet?",
+    "Is everything up?"
+   ],
+   "rationale": "A no-argument tool. Isolates call emission from argument construction: if a model fails here it did not fail at filling in a schema."
+  },
+  "chat_search": {
+   "kind": "tool",
+   "expect": "chat_search",
+   "destructive": false,
+   "prompts": [
+    "What did we decide about the Spark's reasoning budget? It was in another topic.",
+    "Search the other chats for what was said about the Spark reasoning budget.",
+    "Someone discussed the Spark's token budget somewhere else \u2014 find it.",
+    "Look through the other conversations for the decision on the Spark's reasoning budget."
+   ],
+   "rationale": "Requires noticing that the answer lives in a different conversation. The tempting wrong answer is to reply from context it does not have."
+  },
+  "chat_list": {
+   "kind": "tool",
+   "expect": "chat_list",
+   "destructive": false,
+   "prompts": [
+    "Which conversations do you have? Give me their thread ids.",
+    "List every chat and topic you know about.",
+    "What threads exist?",
+    "Show me all the conversations with their ids."
+   ],
+   "rationale": "A second no-argument tool, to check the belt is not collapsing to one default."
+  },
+  "memory_save": {
+   "kind": "tool",
+   "expect": "memory_save",
+   "destructive": false,
+   "prompts": [
+    "Remember this: selfkey starts locked after every restart and only a human can unlock it.",
+    "Save the fact that selfkey comes up locked after a restart.",
+    "Keep a note for later \u2014 selfkey is always locked when it restarts.",
+    "Store this permanently: selfkey boots locked, a person has to unlock it."
+   ],
+   "rationale": "A write. Free text is checked for substring only \u2014 grading a model on phrasing a saved fact one exact way would measure wording, not tool use. remember_fact is accepted too, and that is a finding rather than a concession: the belt carries two tools that both save a durable fact, to different stores, and neither description gives a user's phrasing any way to choose. The first run scored memory_save alone and every model came out between 0% and 28% \u2014 not because they failed, but because 52 of 72 calls picked the other reasonable tool. capture_note stays wrong: it appends to today's daily note, which is a log entry, not a durable fact."
+  },
+  "memory_search": {
+   "kind": "tool",
+   "expect": "memory_search",
+   "destructive": false,
+   "prompts": [
+    "What have I saved about the Trading 212 key?",
+    "Search my memory for anything about Trading 212.",
+    "Do I have anything stored about the T212 API key?",
+    "Look up what I've noted about Trading 212."
+   ],
+   "rationale": "Read-side counterpart to memory_save, and a near neighbour of chat_search."
+  },
+  "home_control": {
+   "kind": "tool",
+   "expect": "home_control",
+   "destructive": false,
+   "prompts": [
+    "Turn off the living room lights.",
+    "Kill the lights in the living room.",
+    "Lights off in the living room please.",
+    "Switch the living room light off."
+   ],
+   "rationale": "Three required arguments that have to agree with each other. The common failure is a valid-looking call whose domain and service disagree."
+  },
+  "network_status": {
+   "kind": "tool",
+   "expect": "network_status",
+   "destructive": false,
+   "prompts": [
+    "How much traffic is going over the tailnet right now?",
+    "What's the Tailscale throughput?",
+    "Show me tailnet network usage.",
+    "Is anything hammering the tailnet?"
+   ],
+   "rationale": "Checks a tool outside the app-management cluster is reachable at all."
+  },
+  "brain_today": {
+   "kind": "tool",
+   "expect": "brain_today",
+   "destructive": false,
+   "prompts": [
+    "What's on today?",
+    "Anything happening today I should know about?",
+    "Give me today's rundown.",
+    "What does today look like?"
+   ],
+   "rationale": "Deliberately vague. A model that pattern-matches on keywords has nothing to match; it has to read the tool descriptions."
+  },
+  "capture_note": {
+   "kind": "tool",
+   "expect": "capture_note",
+   "destructive": false,
+   "prompts": [
+    "Put in today's daily note that the media drive was unmounted again.",
+    "Add a line to today's note: media drive came up unmounted.",
+    "Jot down in the daily note that the media drive wasn't mounted.",
+    "Note in today's daily note that the media drive dropped again."
+   ],
+   "rationale": "Sits next to memory_save and remember_fact in the belt. Distinguishes \"writes something down\" from \"writes it in the right place\"."
+  }
+ },
+ "outcome_counts": {
+  "chat": {
+   "prose_plain": 54,
+   "confirmation": 21,
+   "tool_call": 194,
+   "prose_tool_syntax": 1
+  },
+  "coder": {
+   "prose_plain": 54,
+   "tool_call": 203,
+   "prose_tool_syntax": 13
+  },
+  "fast": {
+   "prose_plain": 53,
+   "prose_tool_syntax": 1,
+   "tool_call": 215,
+   "error": 1
+  },
+  "vision": {
+   "prose_plain": 36,
+   "empty": 18,
+   "tool_call": 216
+  }
+ },
+ "examples": [
+  {
+   "model": "fast",
+   "task": "hardware_opinion",
+   "outcome": "prose_tool_syntax",
+   "shape": "json_name_args",
+   "content": "The GB10 (likely referring to the NVIDIA A100 or a similar professional GPU) is better suited for specific workloads like AI training, large-scale data processing, or professional rendering due to its higher memory bandwidth and specialized architectures (e.g., Tensor Core support). Consumer GPUs like the 4090 excel in gaming, general-purpose computing, and ray tracing but lack the specialized hardware for enterprise-scale tasks. For precise details, clarify which GB10 model you're referring to. \n\n<tool>\n{\"name\": \"search_brain\", \"arguments\": {\"query\": \"GB10 vs 4090\"}}\n</tool>"
+  },
+  {
+   "model": "chat",
+   "task": "restart_app",
+   "outcome": "confirmation",
+   "shape": null,
+   "content": "I need to confirm with you before restarting Moude, as it will stop the service. Are you sure you want to proceed with the restart now?"
+  },
+  {
+   "model": "coder",
+   "task": "stop_colloquial",
+   "outcome": "prose_tool_syntax",
+   "shape": "function_tag",
+   "content": "I'll stop the ai212 app for you. Let me do that right away.\n\n<function=ecosystem_app>\n<parameter=app>\nai212\n</parameter>\n<parameter=action>\nstop\n</parameter>\n</function>\n</tool_call>"
+  },
+  {
+   "model": "chat",
+   "task": "network_status",
+   "outcome": "prose_tool_syntax",
+   "shape": "tools_tag",
+   "content": "<tools>\n{\"name\": \"network_status\", \"arguments\": {}}\n</tools>"
+  }
+ ]
+}

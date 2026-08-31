@@ -1,6 +1,6 @@
 # lebenchmark run
 
-- **Endpoint** `http://spark.tailec77b2.ts.net:8000/v1`
+- **Endpoint** `http://spark.example-tailnet.ts.net:8000/v1`
 - **Engine** ollama, preset `qwen3-next-80b`
 - **Started** 2026-08-30T13:21:35.681906+00:00
 - **Settings** temperature 0.3, max_tokens 8192, 16 tools on the belt

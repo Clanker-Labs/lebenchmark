@@ -1,4 +1,4 @@
-BASE_URL ?= http://spark.tailec77b2.ts.net:8000/v1
+BASE_URL ?= http://spark.example-tailnet.ts.net:8000/v1
 MODELS   ?= chat,coder,fast,vision
 REPS     ?= 48
 
@@ -22,6 +22,13 @@ run:              ## the full suite — hours; run `make plan` first
 
 report:           ## re-aggregate an existing run: make report RUN=results/<id>
 	uv run lebenchmark report $(RUN)
+
+sitedata:         ## regenerate the study site's figures: make sitedata RUN=results/<id>
+	uv run lebenchmark sitedata $(RUN)
+
+site:             ## serve the study site at http://127.0.0.1:8899
+	@echo "study site on http://127.0.0.1:8899 — ctrl-c to stop"
+	@cd docs && python3 -m http.server 8899
 
 test:             ## unit tests (no network)
 	uv run pytest -q

@@ -47,6 +47,18 @@ Plus one sweep aimed at a specific documented failure: how the reasoning-token
 budget changes the rate of empty answers on a second agent turn. See
 `docs/methodology.md`.
 
+## The study site
+
+The whole thing is written up as an interactive site in `docs/`, published at
+**<https://clanker-labs.github.io/lebenchmark/>** — confidence intervals you can
+drag, the response classifier running in the browser, and the budget cliff as a
+chart rather than a paragraph. Every figure is generated from the run's
+`raw.jsonl` by `make sitedata`; the page hardcodes no numbers.
+
+```bash
+make site        # serve it locally on :8899
+```
+
 ## What the first run found
 
 `results/20260830T132135Z-ollama-qwen3-next-80b-full/` — 1310 calls, 4.6 hours,
@@ -97,14 +109,14 @@ cd lebenchmark
 make setup
 
 # Is the gateway there, and which aliases does it serve?
-make probe BASE_URL=http://spark.tailec77b2.ts.net:8000/v1
+make probe BASE_URL=http://spark.example-tailnet.ts.net:8000/v1
 
 # ~5 minutes. Proves the harness end to end.
-make smoke BASE_URL=http://spark.tailec77b2.ts.net:8000/v1
+make smoke BASE_URL=http://spark.example-tailnet.ts.net:8000/v1
 
 # The real thing. Hours, not minutes — check `make plan` first.
 make plan
-make run BASE_URL=http://spark.tailec77b2.ts.net:8000/v1
+make run BASE_URL=http://spark.example-tailnet.ts.net:8000/v1
 ```
 
 `make run` writes `results/<timestamp>-<engine>-<preset>/`:
@@ -115,6 +127,10 @@ make run BASE_URL=http://spark.tailec77b2.ts.net:8000/v1
 | `raw.jsonl` | one line per call — prompt, response, grade, timings. The primary record |
 | `summary.json` | the aggregates, with confidence intervals |
 | `report.md` | those aggregates as tables |
+
+Point it at your own gateway by copying `.env.example` to `.env` — endpoint,
+model ids, run size and concurrency all live there, and the defaults assume a
+local Ollama rather than any particular machine.
 
 Re-grade an old run without spending another hour on the GPU:
 

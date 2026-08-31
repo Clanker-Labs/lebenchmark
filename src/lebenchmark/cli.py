@@ -12,15 +12,19 @@ import httpx
 import typer
 
 from . import __version__
+from .config import Config
 from .report import read, regrade, render, summarise, write_summary
 from .run import execute, manifest, plan_budget, plan_latency, plan_toolcall
 from .tasks import TaskError, load
 
 app = typer.Typer(add_completion=False, help="Benchmark local models on the chezmoi tool surface.")
 
-DEFAULT_BASE = "http://spark.tailec77b2.ts.net:8000/v1"
-DEFAULT_MODELS = "chat,coder,fast,vision"
-DEFAULT_BUDGETS = "512,1024,2048,4096,8192"
+# Resolved once at import: .env then the environment then the built-in defaults.
+# A command-line flag still overrides whatever this produced.
+CFG = Config.load()
+DEFAULT_BASE = CFG.base_url
+DEFAULT_MODELS = CFG.models
+DEFAULT_BUDGETS = CFG.budgets
 
 
 def _models(value: str) -> list[str]:
@@ -28,14 +32,22 @@ def _models(value: str) -> list[str]:
 
 
 def _harness_info(base_url: str) -> dict | None:
-    """Ask the ops dashboard what is actually serving.
+    """Ask an ops dashboard what is actually serving.
 
-    A result without the engine and preset behind it is not reproducible — the
-    alias `chat` has meant two different models on two different presets. Best
-    effort: pointing the benchmark at a gateway with no dashboard is fine.
+    A result without the engine and preset behind it is not reproducible — an
+    alias like `chat` can mean two different models on two different presets.
+    Best effort: most endpoints have no such dashboard, and that is fine.
+
+    Set LEBENCHMARK_HARNESS_URL to point at one; otherwise the gateway root is
+    tried on the chance it serves `/api/status` itself.
     """
     root = base_url.rsplit("/v1", 1)[0].rstrip("/")
-    for candidate in (root.replace(":8000", ":8701"), root):
+    candidates = [CFG.harness_url] if CFG.harness_url else []
+    candidates.append(root)
+    for candidate in candidates:
+        if not candidate:
+            continue
+        candidate = candidate.rstrip("/")
         try:
             r = httpx.get(f"{candidate}/api/status", timeout=8)
             if r.status_code == 200:
@@ -67,7 +79,7 @@ def probe(base_url: str = typer.Option(DEFAULT_BASE, "--base-url")) -> None:
         typer.echo("harness   no ops dashboard found (fine — engine will be recorded as unknown)")
     try:
         r = httpx.get(f"{base_url.rstrip('/')}/models", timeout=15,
-                      headers={"Authorization": "Bearer lebenchmark"})
+                      headers={"Authorization": f"Bearer {CFG.api_key}"})
         r.raise_for_status()
         ids = [m["id"] for m in r.json().get("data", [])]
         typer.echo(f"aliases   {', '.join(ids)}")
@@ -79,11 +91,11 @@ def probe(base_url: str = typer.Option(DEFAULT_BASE, "--base-url")) -> None:
 @app.command()
 def plan(
     models: str = typer.Option(DEFAULT_MODELS, "--models"),
-    reps: int = typer.Option(48, "--reps", help="Trials per task per model."),
-    budget_reps: int = typer.Option(25, "--budget-reps"),
-    latency_reps: int = typer.Option(25, "--latency-reps"),
+    reps: int = typer.Option(CFG.reps, "--reps", help="Trials per task per model."),
+    budget_reps: int = typer.Option(CFG.budget_reps, "--budget-reps"),
+    latency_reps: int = typer.Option(CFG.latency_reps, "--latency-reps"),
     budgets: str = typer.Option(DEFAULT_BUDGETS, "--budgets"),
-    tasks_dir: str = typer.Option("tasks", "--tasks"),
+    tasks_dir: str = typer.Option(CFG.tasks_dir, "--tasks"),
     rate: float = typer.Option(0.4, "--rate", help="Assumed calls/second, for the estimate."),
 ) -> None:
     """Say how many calls a run would make, and roughly how long it would take."""
@@ -110,14 +122,14 @@ def plan(
 def run(
     base_url: str = typer.Option(DEFAULT_BASE, "--base-url"),
     models: str = typer.Option(DEFAULT_MODELS, "--models"),
-    reps: int = typer.Option(48, "--reps"),
-    budget_reps: int = typer.Option(25, "--budget-reps"),
-    latency_reps: int = typer.Option(25, "--latency-reps"),
+    reps: int = typer.Option(CFG.reps, "--reps"),
+    budget_reps: int = typer.Option(CFG.budget_reps, "--budget-reps"),
+    latency_reps: int = typer.Option(CFG.latency_reps, "--latency-reps"),
     budgets: str = typer.Option(DEFAULT_BUDGETS, "--budgets"),
-    concurrency: int = typer.Option(4, "--concurrency"),
-    tasks_dir: str = typer.Option("tasks", "--tasks"),
+    concurrency: int = typer.Option(CFG.concurrency, "--concurrency"),
+    tasks_dir: str = typer.Option(CFG.tasks_dir, "--tasks"),
     only: str = typer.Option("", "--only", help="Comma-separated task ids."),
-    results_dir: str = typer.Option("results", "--results"),
+    results_dir: str = typer.Option(CFG.results_dir, "--results"),
     label: str = typer.Option("", "--label", help="Suffix for the run directory."),
     skip_budget: bool = typer.Option(False, "--skip-budget"),
     skip_latency: bool = typer.Option(False, "--skip-latency"),
@@ -186,7 +198,7 @@ def run(
 @app.command()
 def report(
     run_dir: str = typer.Argument(..., help="A results/<run-id> directory."),
-    tasks_dir: str = typer.Option("tasks", "--tasks"),
+    tasks_dir: str = typer.Option(CFG.tasks_dir, "--tasks"),
 ) -> None:
     """Re-aggregate an existing run. Never touches the gateway."""
     path = Path(run_dir)
@@ -234,6 +246,27 @@ def calibrate(
     if out:
         Path(out).write_text(json.dumps(rows, indent=2))
         typer.echo(f"written   {out}")
+
+
+@app.command()
+def sitedata(
+    run_dir: str = typer.Argument(..., help="A results/<run-id> directory."),
+    out: str = typer.Option("docs/data.json", "--out"),
+    tasks_dir: str = typer.Option(CFG.tasks_dir, "--tasks"),
+) -> None:
+    """Regenerate the study site's data from a run.
+
+    The site plots this file and hardcodes nothing, so a re-run or a re-grade
+    updates every figure by rewriting it.
+    """
+    from .sitedata import build
+
+    payload = build(run_dir, tasks_dir)
+    path = Path(out)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=1))
+    typer.echo(f"wrote {path} from {payload['generated_from']} "
+               f"({payload['total_calls']} calls, {len(payload['models'])} models)")
 
 
 @app.command()

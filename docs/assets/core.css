@@ -1,0 +1,225 @@
+/* The core — a living mark for the surface you talk to.
+ * Clanker-Labs/branding · brand/core.md
+ *
+ * Drop-in: no build step, no dependencies, one custom element's worth of DOM.
+ *
+ * Everything animated here is `transform` or `opacity`, both of which the
+ * compositor handles without touching layout or paint. No `filter: blur()` in
+ * an animation — it re-rasterises every frame and is the most expensive thing
+ * you can put in one. The glow is a static radial-gradient sitting underneath.
+ */
+
+.clanker-core {
+  --core-size: 220px;
+
+  /* State hues. Each is a readout, not a decoration — see brand/core.md.
+   *
+   * Every hue defers to an Unchained Labs token and falls back to that token's
+   * literal value. A host page that defines the `--ul-*` palette therefore
+   * repaints the core for free; a page that defines nothing still gets the
+   * documented default rather than an unstyled element. The fallbacks are the
+   * measured values from Unchained-Labs/branding `tokens/tokens.css` — if you
+   * change one here, change it there first.
+   *
+   * Only `thinking` and `alert` borrow from the status axis, and both genuinely
+   * encode status ("working" / "wrong"). `speaking` is heading ink rather than
+   * a hue, so the loudest state does not invent a sixth colour. */
+  --core-idle:      var(--ul-accent-dim, #00A888);
+  --core-listening: var(--ul-accent,     #00D4AA);
+  --core-thinking:  var(--ul-warn,       #E8B339);
+  --core-speaking:  var(--ul-heading,    #E8EDF2);
+  --core-alert:     var(--ul-down,       #E5484D);
+
+  --core-hue: var(--core-idle);
+  --core-ink: var(--ul-bg, #0F1419);
+
+  /* One breath. Slow enough to read as alive rather than as a pulse: a heart
+     rate reads as alarm, a breath reads as calm. */
+  --core-breath: 6s;
+  --clanker-core-spin: 14s;
+  --core-ease: cubic-bezier(.42, 0, .58, 1);
+
+  /* Voice amplitude, 0..1, written by core.js. Drives the ring while
+     listening and is otherwise ignored. */
+  --core-level: 0;
+
+  position: relative;
+  width: var(--core-size);
+  height: var(--core-size);
+  display: grid;
+  place-items: center;
+  color: var(--core-hue);
+  /* Hue is transitioned, never snapped: a state change you can see happening
+     tells you WHICH way it changed. */
+  transition: color .6s var(--core-ease);
+}
+
+/* --- the glow ------------------------------------------------------------
+   Static. Scaled by the breath rather than blurred per frame. */
+.clanker-core__glow {
+  position: absolute;
+  inset: -18%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%,
+    currentColor 0%, transparent 62%);
+  opacity: .16;
+  transform: scale(.94);
+  animation: clanker-core-breathe var(--core-breath) var(--core-ease) infinite;
+  will-change: transform, opacity;
+}
+
+/* --- rings ---------------------------------------------------------------
+   Three, at different rates. Different rates matter: identical rotation reads
+   as one rigid object, and the point is something composed of parts that
+   move with each other rather than as a block. */
+.clanker-core__ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  opacity: .28;
+  will-change: transform;
+}
+.clanker-core__ring--outer {
+  inset: 2%;
+  border-style: solid;
+  opacity: .18;
+  animation: clanker-core-spin var(--clanker-core-spin) linear infinite;
+  /* A gap in the ring is what makes rotation visible at all. A perfect circle
+     rotating is indistinguishable from a circle standing still. */
+  border-top-color: transparent;
+  border-right-color: transparent;
+}
+.clanker-core__ring--mid {
+  inset: 16%;
+  opacity: .3;
+  animation: clanker-core-spin calc(var(--clanker-core-spin) * -0.62) linear infinite;
+  border-bottom-color: transparent;
+}
+.clanker-core__ring--inner {
+  inset: 30%;
+  opacity: .5;
+  animation: clanker-core-breathe var(--core-breath) var(--core-ease) infinite;
+}
+
+/* --- the orb -------------------------------------------------------------
+   The thing you actually look at while talking. */
+.clanker-core__orb {
+  position: relative;
+  width: 26%;
+  height: 26%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 34%,
+    #fff 0%, currentColor 42%, color-mix(in oklab, currentColor 55%, var(--core-ink)) 100%);
+  box-shadow: 0 0 24px 2px currentColor;
+  animation: clanker-core-breathe var(--core-breath) var(--core-ease) infinite;
+  will-change: transform;
+}
+
+/* --- voice ring ----------------------------------------------------------
+   Only visible while listening. Radius follows amplitude, so silence is a
+   still ring rather than a dancing one — see brand/core.md on why. */
+.clanker-core__voice {
+  position: absolute;
+  inset: 22%;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  opacity: 0;
+  transform: scale(calc(.8 + var(--core-level) * .5));
+  /* Fast enough to feel connected to your voice, slow enough not to jitter on
+     the noise floor. */
+  transition: transform .12s linear, opacity .3s var(--core-ease);
+  pointer-events: none;
+}
+
+@keyframes clanker-core-breathe {
+  0%, 100% { transform: scale(.94); opacity: .78; }
+  50%      { transform: scale(1.04); opacity: 1; }
+}
+@keyframes clanker-core-spin { to { transform: rotate(360deg); } }
+
+/* One expansion, then still. See brand/core.md: a repeating alert becomes
+   wallpaper because the eye adapts to periodic motion. */
+@keyframes clanker-core-alert-once {
+  0%   { transform: scale(.9);  opacity: 1; }
+  35%  { transform: scale(1.22); opacity: .9; }
+  100% { transform: scale(1);   opacity: 1; }
+}
+
+/* --- states -------------------------------------------------------------- */
+.clanker-core[data-state="idle"]      { --core-hue: var(--core-idle); }
+
+.clanker-core[data-state="listening"] { --core-hue: var(--core-listening); }
+.clanker-core[data-state="listening"] .clanker-core__voice { opacity: .85; }
+.clanker-core[data-state="listening"] .clanker-core__glow  { opacity: .26; }
+
+.clanker-core[data-state="thinking"]  { --core-hue: var(--core-thinking); }
+/* The breath HOLDS while thinking and only the ring turns. Something that
+   breathes and spins at once reads as agitated; stillness plus one moving part
+   reads as concentration. */
+.clanker-core[data-state="thinking"] .clanker-core__orb,
+.clanker-core[data-state="thinking"] .clanker-core__glow { animation-play-state: paused; }
+.clanker-core[data-state="thinking"] .clanker-core__ring--mid {
+  animation-duration: calc(var(--clanker-core-spin) * 0.25);
+  opacity: .6;
+}
+
+.clanker-core[data-state="speaking"]  { --core-hue: var(--core-speaking); }
+.clanker-core[data-state="speaking"] .clanker-core__orb {
+  animation-duration: calc(var(--core-breath) / 5);
+}
+
+.clanker-core[data-state="alert"]     { --core-hue: var(--core-alert); }
+.clanker-core[data-state="alert"] .clanker-core__orb {
+  animation: clanker-core-alert-once .9s var(--core-ease) 1 both;
+}
+.clanker-core[data-state="alert"] .clanker-core__ring--outer,
+.clanker-core[data-state="alert"] .clanker-core__ring--mid { animation-play-state: paused; }
+
+/* --- reduced motion ------------------------------------------------------
+   Motion stops; hue and brightness do not. State stays legible with nothing
+   moving, which is the accessibility requirement AND what makes the core
+   readable in a screenshot. */
+@media (prefers-reduced-motion: reduce) {
+  .clanker-core__glow, .clanker-core__ring, .clanker-core__orb { animation: none !important; }
+  .clanker-core__orb { transform: scale(1); }
+  .clanker-core[data-state="thinking"] .clanker-core__ring--mid { opacity: .7; }
+}
+
+/* --- size variants -------------------------------------------------------
+   The glow is a fixed proportion of the box, so at badge size it swallows the
+   rings and every state collapses into "a coloured dot". Dimming it back is
+   what keeps the structure legible small — and the structure is what says this
+   is the same object as the big one. */
+.clanker-core--sm { --core-size: 88px; }
+.clanker-core--sm .clanker-core__glow { opacity: .1; }
+.clanker-core--sm .clanker-core__ring { opacity: .42; }
+.clanker-core--sm .clanker-core__orb { box-shadow: 0 0 10px 1px currentColor; }
+.clanker-core--lg { --core-size: 320px; }
+
+/* --- the neural core ------------------------------------------------------
+   The canvas variant. Everything visual belongs to neural.js; this only gives
+   the canvas a box and puts a static bloom behind it, because a radial
+   gradient in CSS costs nothing per frame while the same thing drawn in canvas
+   costs a large fill every frame. */
+.clanker-core--neural { position: relative; }
+.clanker-core--neural::before {
+  content: "";
+  position: absolute;
+  inset: -12%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, currentColor 0%, transparent 68%);
+  opacity: .12;
+  pointer-events: none;
+}
+.clanker-core--neural .clanker-core__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+}
+/* The canvas draws the whole thing, so the CSS parts must not double up. */
+.clanker-core--neural .clanker-core__glow,
+.clanker-core--neural .clanker-core__ring,
+.clanker-core--neural .clanker-core__orb,
+.clanker-core--neural .clanker-core__voice { display: none; }
